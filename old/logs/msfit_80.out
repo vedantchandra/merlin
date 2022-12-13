@@ -1,0 +1,9 @@
+holy7c19112.rc.fas.harvard.edu
+... Running 80
+    ... Pulling Data
+star is GAIA DR3 2758503253355581312
+spectrum file is /n/holyscratch01/conroy_lab/vchandra/mage/MS/ms_input/2758503253355581312.fits
+[7000 7000 7000 ... 7000 7000 7000]
+    ... GaiaEDR3 Parallax = 0.0114863 +/- 0.206184
+    ... SFD Av = 0.318375
+    ... Building Phot

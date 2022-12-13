@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "01_runstar.py", line 413, in <module>
+    run(args.starind,version=args.version,overwrite=args.overwrite)
+  File "01_runstar.py", line 162, in run
+    if ((mcat[pp] > 5.0) &
+TypeError: ufunc 'bitwise_and' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''

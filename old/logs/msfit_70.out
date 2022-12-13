@@ -1,0 +1,156 @@
+holy7c19113.rc.fas.harvard.edu
+... Running 70
+    ... Pulling Data
+star is GAIA DR3 6812371327539305600
+spectrum file is /n/holyscratch01/conroy_lab/vchandra/mage/MS/ms_input/6812371327539305600.fits
+[7000 7000 7000 ... 7000 7000 7000]
+    ... GaiaEDR3 Parallax = -0.00143469 +/- 0.0515465
+    ... SFD Av = 0.0885348
+    ... Building Phot
+    ... Building Spec
+spectrum from 5050 to 5299 wavelengths
+    ... Building Input Dict
+    ... Building Sampler Options
+    ... Building Prior Options
+    ... Writing to: /n/holyscratch01/conroy_lab/vchandra/mage/MS/ms_input/output/samp_run_70_spec_6812371327539305600_h3.dat
+---------------
+    Median Spec Flux: 
+       350.7074461964322
+    Median Spec Err_Flux:
+       7.922716523788155
+    Fitting Wavelengths:
+       5050.302898622699 -- 5299.8191280392675
+    Min Resolution of Spectrum: 0.306357
+    Max Resolution of Spectrum: 0.321493
+    Mean Resolution of Spectrum: 0.313864
+    Fitting w/ ANN: LinNet
+---------------
+    PHOT:
+       GaiaEDR3_G = 16.397171020507812 +/- 0.03055552086684489
+       GaiaEDR3_BP = 17.59202766418457 +/- 0.1075385914804367
+       GaiaEDR3_RP = 15.286120414733887 +/- 0.05617896891846868
+       PS_g = 17.42596435546875 +/- 0.020198499509092766
+       PS_r = 15.97062873840332 +/- 0.020144599567691684
+       PS_i = 15.529041290283203 +/- 0.020095748435554738
+       PS_z = 14.907893180847168 +/- 0.02018370865685473
+       PS_y = 14.856833457946777 +/- 0.02017453604770329
+       2MASS_J = 13.647000312805176 +/- 0.05503635164194989
+       2MASS_H = 12.86400032043457 +/- 0.05635601146191038
+       2MASS_Ks = 12.630999565124512 +/- 0.057306195549861556
+       WISE_W1 = 12.478364944458008 +/- 0.05004011646351579
+       WISE_W2 = 12.272215843200684 +/- 0.050201082991168544
+    PRIORS:
+       EEP: min=1 max=808
+       initial_Mass: min=0.5 max=2.0
+       initial_[Fe/H]: min=-4.0 max=0.25
+       initial_[a/Fe]: min=-0.2 max=0.6
+       Dist: min=1945.4089092009572 max=300000.0
+       Av: N(0.08853478622436523,0.008853478622436522) [0.0 - 0.4426739311218261]
+       Age: min=6.0 max=14.0
+       Parallax: N(-0.0014346903357905564,0.051546544)
+       Vrad: min=-350.0 max=350.0
+       Inst_R: fixed(8000.0)
+       Turned on IMF prior
+--------------
+... fitting spectrum
+... Fitting a Blaze function
+... Fitting a Blaze function with polyoder: 4
+... fitting photometry
+... MS sampling pars:
+    ... Vrad
+    ... Vrot
+    ... Dist
+    ... Av
+    ... EEP
+    ... initial_[Fe/H]
+    ... initial_[a/Fe]
+    ... initial_Mass
+    ... pc_0
+    ... pc_1
+    ... pc_2
+    ... pc_3
+Using Model: /n/home03/vchandra/software/MS_files/MIST_2.0_spot_EEPtrk_small.h5
+Static Dynesty w/ rwalk sampler, 25 walks/slices, 250 number of samples, Ndim = 12, and w/ stopping criteria of dlog(z) = 0.01: 2022-09-20 13:19:03.722878
+Max Iter: 9223372036854775807 / Max Call: 9223372036854775807
+Start Sampling @ 2022-09-20 13:19:08.278006
+iter: 0 | nc: 8 | ncall: 8 | eff(%):  0.388 | logz:   -inf +/-    nan | loglk:   -inf | dlogz:    inf >  0.010   | mean(time):  0.01833 | time: 2022-09-20 13:19:08.425646 
+iter: 250 | nc: 25 | ncall: 3372 | eff(%):  6.930 | logz:   -inf +/-    nan | loglk:   -inf | dlogz: 1196336.987 >  0.010   | mean(time):  0.01833 | time: 2022-09-20 13:20:09.878779 
+iter: 500 | nc: 25 | ncall: 9703 | eff(%):  5.034 | logz: -357771.013 +/-    nan | loglk: -357762.798 | dlogz: 312791.619 >  0.010   | mean(time):  0.01856 | time: 2022-09-20 13:22:07.380181 
+iter: 750 | nc: 25 | ncall: 15953 | eff(%):  4.635 | logz: -216238.727 +/-    nan | loglk: -216229.515 | dlogz: 169653.903 >  0.010   | mean(time):  0.01843 | time: 2022-09-20 13:24:02.541381 
+iter: 1000 | nc: 25 | ncall: 22203 | eff(%):  4.458 | logz: -142494.853 +/-    nan | loglk: -142484.642 | dlogz: 117546.588 >  0.010   | mean(time):  0.01835 | time: 2022-09-20 13:25:57.220999 
+iter: 1250 | nc: 25 | ncall: 28464 | eff(%):  4.357 | logz: -99546.866 +/-    nan | loglk: -99535.658 | dlogz: 74369.627 >  0.010   | mean(time):  0.01831 | time: 2022-09-20 13:27:51.888140 
+iter: 1500 | nc: 25 | ncall: 34727 | eff(%):  4.291 | logz: -74412.373 +/-    nan | loglk: -74400.167 | dlogz: 49274.499 >  0.010   | mean(time):  0.01830 | time: 2022-09-20 13:29:46.505912 
+iter: 1750 | nc: 25 | ncall: 40995 | eff(%):  4.245 | logz: -56069.699 +/-    nan | loglk: -56056.494 | dlogz: 35792.622 >  0.010   | mean(time):  0.01825 | time: 2022-09-20 13:31:40.900986 
+iter: 2000 | nc: 25 | ncall: 47300 | eff(%):  4.208 | logz: -44095.909 +/-    nan | loglk: -44081.706 | dlogz: 27498.389 >  0.010   | mean(time):  0.01812 | time: 2022-09-20 13:33:35.162790 
+iter: 2250 | nc: 25 | ncall: 53550 | eff(%):  4.184 | logz: -36613.484 +/-    nan | loglk: -36598.352 | dlogz: 19987.778 >  0.010   | mean(time):  0.01815 | time: 2022-09-20 13:35:28.594878 
+iter: 2500 | nc: 25 | ncall: 59839 | eff(%):  4.162 | logz: -31797.600 +/-    nan | loglk: -31781.401 | dlogz: 17744.859 >  0.010   | mean(time):  0.01815 | time: 2022-09-20 13:37:22.740887 
+iter: 2750 | nc: 25 | ncall: 66090 | eff(%):  4.147 | logz: -28054.931 +/-    nan | loglk: -28037.746 | dlogz: 13984.880 >  0.010   | mean(time):  0.01816 | time: 2022-09-20 13:39:16.271654 
+iter: 3000 | nc: 25 | ncall: 72372 | eff(%):  4.132 | logz: -24584.877 +/-    nan | loglk: -24566.712 | dlogz: 10512.853 >  0.010   | mean(time):  0.01795 | time: 2022-09-20 13:41:09.034480 
+iter: 3250 | nc: 25 | ncall: 78636 | eff(%):  4.121 | logz: -21319.324 +/-    nan | loglk: -21300.132 | dlogz: 10815.936 >  0.010   | mean(time):  0.01811 | time: 2022-09-20 13:43:02.455391 
+iter: 3500 | nc: 25 | ncall: 84992 | eff(%):  4.107 | logz: -18603.088 +/-    nan | loglk: -18582.898 | dlogz: 8077.988 >  0.010   | mean(time):  0.01807 | time: 2022-09-20 13:44:57.287013 
+iter: 3750 | nc: 25 | ncall: 91385 | eff(%):  4.093 | logz: -16452.292 +/-    nan | loglk: -16431.232 | dlogz: 6286.028 >  0.010   | mean(time):  0.01801 | time: 2022-09-20 13:46:52.455877 
+iter: 4000 | nc: 25 | ncall: 97723 | eff(%):  4.084 | logz: -14606.754 +/-    nan | loglk: -14585.536 | dlogz: 5028.966 >  0.010   | mean(time):  0.01792 | time: 2022-09-20 13:48:46.067270 
+iter: 4250 | nc: 25 | ncall: 103974 | eff(%):  4.079 | logz: -13451.783 +/-    nan | loglk: -13428.601 | dlogz: 4776.487 >  0.010   | mean(time):  0.01794 | time: 2022-09-20 13:50:38.187456 
+iter: 4500 | nc: 25 | ncall: 110241 | eff(%):  4.074 | logz: -12131.763 +/-    nan | loglk: -12107.641 | dlogz: 4403.983 >  0.010   | mean(time):  0.01790 | time: 2022-09-20 13:52:30.372818 
+iter: 4750 | nc: 25 | ncall: 116608 | eff(%):  4.066 | logz: -11008.667 +/-    nan | loglk: -10984.823 | dlogz: 3277.091 >  0.010   | mean(time):  0.01791 | time: 2022-09-20 13:54:24.398838 
+iter: 5000 | nc: 25 | ncall: 122931 | eff(%):  4.060 | logz: -10232.124 +/-    nan | loglk: -10206.487 | dlogz: 2500.318 >  0.010   | mean(time):  0.01780 | time: 2022-09-20 13:56:16.953739 
+iter: 5250 | nc: 25 | ncall: 129235 | eff(%):  4.055 | logz: -9524.381 +/-    nan | loglk: -9497.807 | dlogz: 1803.500 >  0.010   | mean(time):  0.01765 | time: 2022-09-20 13:58:08.228421 
+iter: 5500 | nc: 25 | ncall: 135585 | eff(%):  4.050 | logz: -8967.847 +/-    nan | loglk: -8940.422 | dlogz: 1542.315 >  0.010   | mean(time):  0.01750 | time: 2022-09-20 13:59:59.381266 
+iter: 5750 | nc: 25 | ncall: 141927 | eff(%):  4.045 | logz: -8532.175 +/-    nan | loglk: -8504.501 | dlogz: 1123.274 >  0.010   | mean(time):  0.01769 | time: 2022-09-20 14:01:51.501291 
+iter: 6000 | nc: 25 | ncall: 148285 | eff(%):  4.040 | logz: -8247.840 +/-    nan | loglk: -8219.718 | dlogz: 863.979 >  0.010   | mean(time):  0.01767 | time: 2022-09-20 14:03:43.851486 
+iter: 6250 | nc: 25 | ncall: 154553 | eff(%):  4.038 | logz: -8017.713 +/-    nan | loglk: -7988.058 | dlogz: 846.001 >  0.010   | mean(time):  0.01767 | time: 2022-09-20 14:05:34.581117 
+iter: 6500 | nc: 25 | ncall: 160946 | eff(%):  4.033 | logz: -7777.930 +/-    nan | loglk: -7746.880 | dlogz: 605.527 >  0.010   | mean(time):  0.01773 | time: 2022-09-20 14:07:27.966116 
+iter: 6750 | nc: 25 | ncall: 167209 | eff(%):  4.031 | logz: -7603.997 +/-    nan | loglk: -7572.717 | dlogz: 440.637 >  0.010   | mean(time):  0.01767 | time: 2022-09-20 14:09:18.660276 
+iter: 7000 | nc: 25 | ncall: 173615 | eff(%):  4.027 | logz: -7474.957 +/-    nan | loglk: -7442.048 | dlogz: 406.349 >  0.010   | mean(time):  0.01758 | time: 2022-09-20 14:11:11.255415 
+iter: 7250 | nc: 25 | ncall: 179865 | eff(%):  4.026 | logz: -7378.640 +/-    nan | loglk: -7345.416 | dlogz: 333.122 >  0.010   | mean(time):  0.01742 | time: 2022-09-20 14:13:00.143892 
+iter: 7500 | nc: 25 | ncall: 186115 | eff(%):  4.025 | logz: -7291.209 +/-    nan | loglk: -7257.075 | dlogz: 330.580 >  0.010   | mean(time):  0.01724 | time: 2022-09-20 14:14:47.919187 
+iter: 7750 | nc: 25 | ncall: 192365 | eff(%):  4.024 | logz: -7215.073 +/-    nan | loglk: -7180.120 | dlogz: 253.395 >  0.010   | mean(time):  0.01723 | time: 2022-09-20 14:16:35.603663 
+iter: 8000 | nc: 25 | ncall: 198636 | eff(%):  4.023 | logz: -7153.430 +/-    nan | loglk: -7117.741 | dlogz: 226.381 >  0.010   | mean(time):  0.01691 | time: 2022-09-20 14:18:21.673507 
+iter: 8250 | nc: 25 | ncall: 204886 | eff(%):  4.022 | logz: -7104.870 +/-    nan | loglk: -7068.321 | dlogz: 176.809 >  0.010   | mean(time):  0.01684 | time: 2022-09-20 14:20:06.911707 
+iter: 8500 | nc: 25 | ncall: 211144 | eff(%):  4.021 | logz: -7064.300 +/-    nan | loglk: -7026.816 | dlogz: 135.220 >  0.010   | mean(time):  0.01686 | time: 2022-09-20 14:21:52.420227 
+iter: 8750 | nc: 25 | ncall: 217427 | eff(%):  4.020 | logz: -7034.752 +/-    nan | loglk: -6996.668 | dlogz: 106.698 >  0.010   | mean(time):  0.01682 | time: 2022-09-20 14:23:38.097188 
+iter: 9000 | nc: 25 | ncall: 223680 | eff(%):  4.020 | logz: -7012.435 +/-    nan | loglk: -6973.450 | dlogz: 98.875 >  0.010   | mean(time):  0.01697 | time: 2022-09-20 14:25:24.241189 
+iter: 9250 | nc: 25 | ncall: 229936 | eff(%):  4.019 | logz: -6988.246 +/-    nan | loglk: -6947.808 | dlogz: 92.271 >  0.010   | mean(time):  0.01727 | time: 2022-09-20 14:27:12.285650 
+iter: 9500 | nc: 25 | ncall: 236186 | eff(%):  4.018 | logz: -6970.165 +/-    nan | loglk: -6929.194 | dlogz: 73.146 >  0.010   | mean(time):  0.01726 | time: 2022-09-20 14:29:00.187664 
+iter: 9750 | nc: 25 | ncall: 242436 | eff(%):  4.018 | logz: -6951.943 +/-    nan | loglk: -6910.357 | dlogz: 63.683 >  0.010   | mean(time):  0.01727 | time: 2022-09-20 14:30:48.097613 
+iter: 10000 | nc: 25 | ncall: 248686 | eff(%):  4.017 | logz: -6938.241 +/-    nan | loglk: -6895.791 | dlogz: 49.836 >  0.010   | mean(time):  0.01730 | time: 2022-09-20 14:32:36.203277 
+iter: 10250 | nc: 25 | ncall: 254936 | eff(%):  4.017 | logz: -6927.745 +/-    nan | loglk: -6884.342 | dlogz: 41.175 >  0.010   | mean(time):  0.01727 | time: 2022-09-20 14:34:24.129429 
+iter: 10500 | nc: 25 | ncall: 261199 | eff(%):  4.016 | logz: -6918.850 +/-    nan | loglk: -6874.974 | dlogz: 41.728 >  0.010   | mean(time):  0.01731 | time: 2022-09-20 14:36:12.524312 
+iter: 10750 | nc: 25 | ncall: 267449 | eff(%):  4.016 | logz: -6911.091 +/-    nan | loglk: -6866.287 | dlogz: 32.968 >  0.010   | mean(time):  0.01737 | time: 2022-09-20 14:38:01.095594 
+iter: 11000 | nc: 25 | ncall: 273699 | eff(%):  4.016 | logz: -6904.754 +/-    nan | loglk: -6859.009 | dlogz: 25.632 >  0.010   | mean(time):  0.01727 | time: 2022-09-20 14:39:49.011236 
+iter: 11250 | nc: 25 | ncall: 279952 | eff(%):  4.015 | logz: -6898.920 +/-    nan | loglk: -6852.281 | dlogz: 20.946 >  0.010   | mean(time):  0.01728 | time: 2022-09-20 14:41:37.059650 
+iter: 11500 | nc: 25 | ncall: 286202 | eff(%):  4.015 | logz: -6894.040 +/-    nan | loglk: -6846.690 | dlogz: 19.241 >  0.010   | mean(time):  0.01709 | time: 2022-09-20 14:43:23.876347 
+iter: 11750 | nc: 25 | ncall: 292452 | eff(%):  4.015 | logz: -6890.274 +/-    nan | loglk: -6842.200 | dlogz: 20.728 >  0.010   | mean(time):  0.01728 | time: 2022-09-20 14:45:11.893667 
+iter: 12000 | nc: 25 | ncall: 298702 | eff(%):  4.014 | logz: -6886.880 +/-    nan | loglk: -6837.913 | dlogz: 16.334 >  0.010   | mean(time):  0.01725 | time: 2022-09-20 14:46:59.711538 
+iter: 12250 | nc: 25 | ncall: 304952 | eff(%):  4.014 | logz: -6883.892 +/-    nan | loglk: -6833.965 | dlogz: 18.061 >  0.010   | mean(time):  0.01732 | time: 2022-09-20 14:48:47.984222 
+iter: 12500 | nc: 25 | ncall: 311231 | eff(%):  4.013 | logz: -6881.404 +/-    nan | loglk: -6830.737 | dlogz: 14.572 >  0.010   | mean(time):  0.01744 | time: 2022-09-20 14:50:37.501677 
+iter: 12750 | nc: 25 | ncall: 317534 | eff(%):  4.012 | logz: -6879.503 +/-    nan | loglk: -6828.000 | dlogz: 13.000 >  0.010   | mean(time):  0.01724 | time: 2022-09-20 14:52:26.161224 
+iter: 13000 | nc: 25 | ncall: 323784 | eff(%):  4.012 | logz: -6877.805 +/-    nan | loglk: -6825.499 | dlogz: 13.158 >  0.010   | mean(time):  0.01712 | time: 2022-09-20 14:54:13.171078 
+iter: 13250 | nc: 25 | ncall: 330044 | eff(%):  4.012 | logz: -6876.319 +/-    nan | loglk: -6823.154 | dlogz: 11.633 >  0.010   | mean(time):  0.01716 | time: 2022-09-20 14:56:00.564367 
+iter: 13500 | nc: 25 | ncall: 336294 | eff(%):  4.012 | logz: -6875.105 +/-    nan | loglk: -6821.133 | dlogz:  9.420 >  0.010   | mean(time):  0.01696 | time: 2022-09-20 14:57:46.576590 
+iter: 13750 | nc: 25 | ncall: 342581 | eff(%):  4.011 | logz: -6874.184 +/-    nan | loglk: -6819.476 | dlogz:  7.501 >  0.010   | mean(time):  0.01683 | time: 2022-09-20 14:59:32.377556 
+iter: 14000 | nc: 25 | ncall: 348930 | eff(%):  4.010 | logz: -6873.358 +/-    nan | loglk: -6817.736 | dlogz:  7.816 >  0.010   | mean(time):  0.01671 | time: 2022-09-20 15:01:18.480545 
+iter: 14250 | nc: 25 | ncall: 355199 | eff(%):  4.009 | logz: -6872.644 +/-    nan | loglk: -6816.143 | dlogz:  6.533 >  0.010   | mean(time):  0.01680 | time: 2022-09-20 15:03:03.830640 
+iter: 14500 | nc: 25 | ncall: 361675 | eff(%):  4.007 | logz: -6872.001 +/-    nan | loglk: -6814.688 | dlogz:  5.274 >  0.010   | mean(time):  0.01681 | time: 2022-09-20 15:04:52.690691 
+iter: 14750 | nc: 25 | ncall: 368126 | eff(%):  4.004 | logz: -6871.498 +/-    nan | loglk: -6813.426 | dlogz:  7.124 >  0.010   | mean(time):  0.01685 | time: 2022-09-20 15:06:41.350385 
+iter: 15000 | nc: 25 | ncall: 375030 | eff(%):  3.997 | logz: -6871.074 +/-    nan | loglk: -6812.107 | dlogz:  5.704 >  0.010   | mean(time):  0.01660 | time: 2022-09-20 15:08:35.913023 
+iter: 15250 | nc: 25 | ncall: 382290 | eff(%):  3.987 | logz: -6870.703 +/-    nan | loglk: -6810.919 | dlogz:  7.807 >  0.010   | mean(time):  0.01666 | time: 2022-09-20 15:10:36.855637 
+iter: 15500 | nc: 25 | ncall: 388644 | eff(%):  3.986 | logz: -6870.395 +/-    nan | loglk: -6809.753 | dlogz:  6.502 >  0.010   | mean(time):  0.01670 | time: 2022-09-20 15:12:22.968245 
+iter: 15750 | nc: 25 | ncall: 395375 | eff(%):  3.981 | logz: -6870.134 +/-    nan | loglk: -6808.698 | dlogz:  5.247 >  0.010   | mean(time):  0.01670 | time: 2022-09-20 15:14:15.330259 
+iter: 16000 | nc: 25 | ncall: 402309 | eff(%):  3.975 | logz: -6869.902 +/-    nan | loglk: -6807.513 | dlogz:  4.030 >  0.010   | mean(time):  0.01608 | time: 2022-09-20 15:16:06.914713 
+iter: 16250 | nc: 25 | ncall: 409204 | eff(%):  3.969 | logz: -6869.701 +/-    nan | loglk: -6806.558 | dlogz:  2.871 >  0.010   | mean(time):  0.01670 | time: 2022-09-20 15:18:02.016039 
+iter: 16500 | nc: 25 | ncall: 415634 | eff(%):  3.968 | logz: -6869.546 +/-    nan | loglk: -6805.595 | dlogz:  2.065 >  0.010   | mean(time):  0.01680 | time: 2022-09-20 15:19:50.022435 
+iter: 16750 | nc: 25 | ncall: 422193 | eff(%):  3.965 | logz: -6869.415 +/-    nan | loglk: -6804.707 | dlogz:  2.916 >  0.010   | mean(time):  0.01671 | time: 2022-09-20 15:21:39.588327 
+iter: 17000 | nc: 25 | ncall: 428962 | eff(%):  3.961 | logz: -6869.313 +/-    nan | loglk: -6803.846 | dlogz:  2.472 >  0.010   | mean(time):  0.01672 | time: 2022-09-20 15:23:32.725224 
+iter: 17250 | nc: 25 | ncall: 435356 | eff(%):  3.960 | logz: -6869.231 +/-    nan | loglk: -6802.981 | dlogz:  3.947 >  0.010   | mean(time):  0.01675 | time: 2022-09-20 15:25:19.838145 
+iter: 17500 | nc: 25 | ncall: 442397 | eff(%):  3.954 | logz: -6869.167 +/-    nan | loglk: -6802.195 | dlogz:  2.921 >  0.010   | mean(time):  0.01673 | time: 2022-09-20 15:27:17.571862 
+iter: 17750 | nc: 25 | ncall: 448894 | eff(%):  3.952 | logz: -6869.118 +/-    nan | loglk: -6801.354 | dlogz:  2.666 >  0.010   | mean(time):  0.01664 | time: 2022-09-20 15:29:05.702387 
+iter: 18000 | nc: 25 | ncall: 455329 | eff(%):  3.951 | logz: -6869.077 +/-    nan | loglk: -6800.516 | dlogz:  1.746 >  0.010   | mean(time):  0.01645 | time: 2022-09-20 15:30:51.611647 
+iter: 18250 | nc: 25 | ncall: 461706 | eff(%):  3.951 | logz: -6869.044 +/-    nan | loglk: -6799.780 | dlogz:  1.056 >  0.010   | mean(time):  0.01583 | time: 2022-09-20 15:32:32.523648 
+iter: 18500 | nc: 25 | ncall: 468292 | eff(%):  3.949 | logz: -6869.021 +/-    nan | loglk: -6799.122 | dlogz:  0.516 >  0.010   | mean(time):  0.01670 | time: 2022-09-20 15:34:22.488179 
+iter: 18750 | nc: 25 | ncall: 474645 | eff(%):  3.948 | logz: -6869.005 +/-    nan | loglk: -6798.355 | dlogz:  0.438 >  0.010   | mean(time):  0.01667 | time: 2022-09-20 15:36:08.375808 
+iter: 19000 | nc: 25 | ncall: 480956 | eff(%):  3.949 | logz: -6868.992 +/-    nan | loglk: -6797.703 | dlogz:  0.484 >  0.010   | mean(time):  0.01671 | time: 2022-09-20 15:37:53.802307 
+iter: 19250 | nc: 25 | ncall: 487504 | eff(%):  3.947 | logz: -6868.983 +/-    nan | loglk: -6796.995 | dlogz:  0.205 >  0.010   | mean(time):  0.01668 | time: 2022-09-20 15:39:42.997892 
+iter: 19500 | nc: 25 | ncall: 493995 | eff(%):  3.946 | logz: -6868.977 +/-    nan | loglk: -6796.344 | dlogz:  0.146 >  0.010   | mean(time):  0.01677 | time: 2022-09-20 15:41:31.818270 
+iter: 19750 | nc: 25 | ncall: 500430 | eff(%):  3.945 | logz: -6868.972 +/-    nan | loglk: -6795.709 | dlogz:  0.074 >  0.010   | mean(time):  0.01673 | time: 2022-09-20 15:43:19.495202 
+iter: 20000 | nc: 25 | ncall: 539215 | eff(%):  3.708 | logz: -6868.969 +/-    nan | loglk: -6795.107 | dlogz:  0.045 >  0.010   | mean(time):  0.01646 | time: 2022-09-20 15:53:52.422789 
