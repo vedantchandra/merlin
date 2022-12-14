@@ -14,6 +14,8 @@
 # 			  change input file handling to match pypeit v1.11.1 syntax
 #			  skipred now automatically disables restart, to keep master files
 # 12/12/2022: change xe-flash to trace only, set edgethresh=3 to prevent reddest slit being skipped
+#			  turn off global_sky_std 
+
 ###############################################################################################
 
 # make a library of your flux standards here
@@ -295,6 +297,8 @@ for line in lines:
 		newlines.append('[reduce]\n')
 		newlines.append('  [[findobj]]\n')
 		newlines.append('    maxnumber_sci=1\n')
+		newlines.append('  [[skysub]]\n')
+		newlines.append('    global_sky_std=False\n')
 		
 	if 'path' in line:
 		break
@@ -558,6 +562,8 @@ for target in targets:
 
 
 # Make coadd preview plots
+
+print('making coadd preview plots...')
 
 for target in targets:
 	coaddfile = scidir + 'coadd/' + target + '_coadd.fits'
