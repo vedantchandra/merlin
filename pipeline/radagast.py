@@ -13,6 +13,7 @@
 # 12/12/2022: disable spatial flexure, increase RMS threshold to 0.4 for wavecal
 # 			  change input file handling to match pypeit v1.11.1 syntax
 #			  skipred now automatically disables restart, to keep master files
+# 12/12/2022: change xe-flash to trace only, set edgethresh=3 to prevent reddest slit being skipped
 ###############################################################################################
 
 # make a library of your flux standards here
@@ -195,8 +196,10 @@ for row in log:
 		
 	## reset file types
 	
-	if 'flat' in row['target'].lower() or 'flash' in row['target'].lower():
+	if 'flat' in row['target'].lower():
 		row['frametype'] = 'trace,illumflat,pixelflat'
+	elif 'flash' in row['target'].lower():
+		row['frametype'] = 'trace'
 	elif 'j' in row['target'].lower():
 		row['frametype'] = 'science'
 	elif 'hip' in row['target'].lower():
@@ -287,7 +290,7 @@ for line in lines:
 		newlines.append('  [[wavelengths]]\n')
 		newlines.append('    rms_threshold=0.4\n')
 		newlines.append('  [[slitedges]]\n')
-		newlines.append('    edge_thresh=5\n')
+		newlines.append('    edge_thresh=10\n')
 
 		newlines.append('[reduce]\n')
 		newlines.append('  [[findobj]]\n')
@@ -359,8 +362,6 @@ except:
 
 print('making order preview plots...')
 
-order_list = [0, 1, 2, 3, 4, 5,6,7,8,9,10,11]
-
 for outfile in outfiles:
 
 	name = outfile.split('_')[-3].split('-')[1]
@@ -373,6 +374,8 @@ for outfile in outfiles:
 
 		if nspec < 12:
 			print('there are only %i/12 orders for %s!!!' % (nspec, name))
+
+		order_list = np.arange(nspec)
 
 		for order in order_list:
 
