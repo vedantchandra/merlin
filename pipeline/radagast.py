@@ -369,6 +369,11 @@ for outfile in outfiles:
 
 	with fits.open(outfile) as f:
 
+		nspec = f[0].header['NSPEC']
+
+		if nspec < 12:
+			print('there are only %i/12 orders for %s!!!' % (nspec, name))
+
 		for order in order_list:
 
 			plt.sca(axs.ravel()[order])
