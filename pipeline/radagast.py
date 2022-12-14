@@ -448,10 +448,7 @@ fluxfile_list.append('flux read')
 fluxfile_list.append('filename | sensfile')
 for ii,scifile in enumerate(scifiles):
 	line = scifile
-	if ii == 0:
-		line += ' | sensfunc.fits'
-		
-	fluxfile_list.append(line)
+	fluxfile_list.append(line + ' | sensfunc.fits')
 fluxfile_list.append('flux end')
 
 with open(scidir + 'fluxfile.txt', 'w') as f:
