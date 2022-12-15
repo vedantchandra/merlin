@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH -J r2022_08_04
+#SBATCH -J r2021_08_03
 #SBATCH -n 8 # Number of cores requested
 #SBATCH -N 1 # Ensure that all cores are on one machine
 #SBATCH -t 05:00:00 # Runtime
 #SBATCH --mem-per-cpu 4500 # Memory
 #SBATCH -p conroy_priority,shared,itc_cluster # Partition to submit to
 #SBATCH --constraint='intel'
-#SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce_2022_08_04_v0.out
-#SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce_2022_08_04_v0.err
+#SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce_2021_08_03_v0.out
+#SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce_2021_08_03_v0.err
 
 module load python
 source ~/.bashrc
@@ -21,4 +21,4 @@ echo $SLURM_JOB_PARTITION
 echo 'NODE NAME:' 
 echo $SLURMD_NODENAME 
 
-python -u radagast.py --dir=/n/holyscratch01/conroy_lab/vchandra/mage/data/2022_08_04/ --version=0  --skipred=True --restart=False
+python -u radagast.py --dir=/n/holyscratch01/conroy_lab/vchandra/mage/data/2021_08_03/ --version=0  --skipred=False
