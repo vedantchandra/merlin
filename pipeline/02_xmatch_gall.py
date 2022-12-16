@@ -29,14 +29,11 @@ charlie_cats = '/n/holystore01/LABS/conroy_lab/Lab/gaia/edr3/gall2/catalogs/'
 charlie_cats = glob.glob(charlie_cats + '*')
 
 galidx = int(sys.argv[1])
-
 bigcat = charlie_cats[galidx]
-
 table = Table.read(infile)
 
-outtab = Table();
+#outtab = Table();
 
-max_sep = 5.0 * u.arcsec
 c = SkyCoord(ra=table['tdb_ra'] * u.degree, dec = table['tdb_dec']*u.degree)
 
 # for bigcat in charlie_cats:
@@ -52,17 +49,21 @@ print(b1, b2)
 
 bigtable = Table.read(bigcat)
 
+max_sep = np.repeat(3.0, len(table)) * u.arcsec
+notgaia = (table['tdb_selection'] == 'rvs') | (table['tdb_selection'] == 'tell')
+max_sep[notgaia] = 20 * u.arcsec
+
 catalog = SkyCoord(ra=bigtable['RA'] * u.degree, dec = bigtable['DEC'] * u.degree)
 idx, d2d, d3d = c.match_to_catalog_sky(catalog)
 sep_constraint = d2d < max_sep
 c_matches = table[sep_constraint]
 cat_matches = bigtable[idx[sep_constraint]]
-tab = astropy.table.hstack((c_matches, cat_matches))
 
-outtab = astropy.table.vstack((outtab, tab))
+outtab = astropy.table.hstack((c_matches, cat_matches))
+
+#outtab = astropy.table.vstack((outtab, tab))
 
 del bigtable
-del tab
 
 print('output table has %i rows' % len(outtab))
 print('writing output!')
