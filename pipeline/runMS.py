@@ -8,13 +8,13 @@ speedoflight = constants.c / 1000.0
 
 fwhm_sigma = 2.0*np.sqrt(2.0*np.log(2.0))
 
-
 specNN = '/n/home03/vchandra/software/MS_files/NN/R12K/modV0_spec_LinNet_R12K_WL445_565.h5' # CHANGE THES
 contNN = '/n/home03/vchandra/software/MS_files/NN/R12K/modV0_cont_LinNet_R12K_WL445_565.h5' #'msdata/lowres/YSTANN_4000_7000_cont.h5' # FIT CONTINUUM_NORMALIZED
 photNN = '/n/home03/vchandra/software/MS_files/VARRV/'
 MISTgrid = '/n/home03/vchandra/software/MS_files/MIST_2.0_spot_EEPtrk_small.h5'
 datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
-
+outdir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+NNtype = 'LinNet'
 
 photbands = ({
     'GAIAEDR3_G':'GaiaEDR3_G',
@@ -39,15 +39,14 @@ photbands = ({
 
 from getdata import getdata
 
-def run(index=None,GaiaID=None,version='VX', npoints = 250,catalog = None,
+def run(GaiaID=None,version='VX', npoints = 250,catalog = None,
     acat_id = None):
 
-    if index is not None:
-        data = getdata(index=index)
     if GaiaID is not None:
         data = getdata(GaiaID=GaiaID)
     if acat_id is not None:
         data = getdata(acat_id = acat_id)
+        
     try:
         assert data['phot']
     except AssertionError:
@@ -58,11 +57,9 @@ def run(index=None,GaiaID=None,version='VX', npoints = 250,catalog = None,
         catalog = 'solo'
 
 
-    samplefile = 'mwm_gaiaID_{GAIAID}_fieldID_{FIELDID}_mjd_{MJD}_catID_{CATID}_{VER}_samp.dat'.format(
-            FIELDID=data['phot']['FIELD'],
+    samplefile = 'mage_{GAIAID}_{MJD}_{VER}_samp.dat'.format(
             GAIAID=data['phot']['GAIAEDR3_ID'],
-            CATID=data['phot']['CATALOGID'],
-            MJD=data['phot']['MJD'],
+            MJD=data['phot']['date'],
             VER=version)
 
     outputfile = '{OUTDIR}samples/{CATALOG}/{VER}/{SAMPLEFILE}'.format(
@@ -71,10 +68,10 @@ def run(index=None,GaiaID=None,version='VX', npoints = 250,catalog = None,
             CATALOG = catalog,
             VER=version)
 
-    print('-- Running survey={0} field={1} mjd={2}'.format('MWM',data['phot']['FIELD'],data['phot']['MJD']))
+    #print('-- Running survey={0} field={1} mjd={2}'.format('MWM',data['phot']['FIELD'],data['phot']['MJD']))
     print('   ... GaiaEDR3 ID = {0}'.format(data['phot']['GAIAEDR3_ID']))
-    print('   ... SDSS5 CATALOG ID = {0}'.format(data['phot']['CATALOGID']))
-    print('   ... Plug RA / Dec = {0} / {1}'.format(data['phot']['RACAT'],data['phot']['DECCAT']))
+    print('   ... ACAT ID = {0}'.format(data['phot']['ACAT_ID']))
+    print('   ... RA / Dec = {0} / {1}'.format(data['phot']['RA'],data['phot']['DEC']))
     sys.stdout.flush()
 
     # get RV estimate
@@ -165,59 +162,12 @@ def run(index=None,GaiaID=None,version='VX', npoints = 250,catalog = None,
     specdata = data['spec']
     spec = {}
     
-    spec['WAVE']   = specdata[0]
-    spec['FLUX']   = specdata[1]
-    spec['E_FLUX'] = 1.0/np.sqrt(specdata[2])
-    spec['WRESL']  = specdata[-1]
+    spec['WAVE']   = specdata['wave']
+    spec['FLUX']   = specdata['flux']
+    spec['E_FLUX'] = 1.0/np.sqrt(specdata['ivar'])
+    spec['WRESL']  = specdata['wresl']
 
     medflux = np.median(spec['FLUX'])
-
-
-    # # create the WRESL array
-    # # spec['WRESL'] = wresl_fudge * (spec['WAVE'] * spec['LSF']) / speedoflight
-    # spec['WRESL'] = wresl_fudge *  spec['LSF']
-
-    # # cond = (spec['WAVE'] > 3850.0) & (spec['WAVE'] < 8900.0)
-    # # spec['WAVE']   = spec['WAVE'][cond]
-    # # spec['FLUX']   = spec['FLUX'][cond]
-    # # spec['E_FLUX'] = spec['E_FLUX'][cond]
-    # # spec['WRESL']  = spec['WRESL'][cond]
-
-    # # cond = (spec['WAVE'] > 4000.0) & (spec['WAVE'] < 7000.0)
-    # # cond = (spec['WAVE'] > 5150.0) & (spec['WAVE'] < 5300.0)
-    # # cond = (spec['WAVE'] > 4455.0) & (spec['WAVE'] < 5645.0)
-    # # cond = (spec['WAVE'] > 5000.0) & (spec['WAVE'] < 5500.0)
-
-    # cond = (spec['WAVE'] > 4750.0) & (spec['WAVE'] < 5500.0)
-    # spec['WAVE']   = spec['WAVE'][cond]
-    # spec['FLUX']   = spec['FLUX'][cond]
-    # spec['E_FLUX'] = spec['E_FLUX'][cond]
-    # spec['WRESL']  = spec['WRESL'][cond]
-
-    # # # mask out H-beta
-    # # cond = (spec['WAVE'] < 4800.0) | (spec['WAVE'] > 4900.0)
-    # # spec['WAVE']   = spec['WAVE'][cond]
-    # # spec['FLUX']   = spec['FLUX'][cond]
-    # # spec['E_FLUX'] = spec['E_FLUX'][cond]
-    # # spec['WRESL']  = spec['WRESL'][cond]
-
-    # # # mask out Na doublet due to ISM absorption
-    # # cond = (spec['WAVE'] < 5850.0) | (spec['WAVE'] > 5950.0)
-    # # spec['WAVE']   = spec['WAVE'][cond]
-    # # spec['FLUX']   = spec['FLUX'][cond]
-    # # spec['E_FLUX'] = spec['E_FLUX'][cond]
-    # # spec['WRESL']  = spec['WRESL'][cond]
-
-    # # # mask out telluric features
-    # # cond = (spec['WAVE'] < 7500.0) | (spec['WAVE'] > 7700.0)
-    # # spec['WAVE']   = spec['WAVE'][cond]
-    # # spec['FLUX']   = spec['FLUX'][cond]
-    # # spec['E_FLUX'] = spec['E_FLUX'][cond]
-    # # spec['WRESL']  = spec['WRESL'][cond]
-
-    # medflux = np.median(spec['FLUX'])
-    # spec['FLUX']   = spec['FLUX']/medflux
-    # spec['E_FLUX'] = spec['E_FLUX']/medflux
 
     print('    ... Building Input Dict')
     # build input dict
@@ -379,7 +329,7 @@ if __name__ == '__main__':
     parser.add_argument("--npoints", "-n", help="number of dynesty points",type=str,default=500)
     args = parser.parse_args()
     run(
-        index=args.index,
+        acat_id=args.index,
         GaiaID=args.GaiaID,
         version=args.version,
         npoints=args.npoints)

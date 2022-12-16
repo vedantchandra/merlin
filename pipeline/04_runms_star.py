@@ -4,7 +4,8 @@ import os
 
 
 
-datadir = '/n/holyscratch01/conroy_lab/vchandra/sdss5/'
+datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+outdir = datadir
 
 def run(catalog=None,ind=None,version='V0.0', npoints = 250, skipfit = 0):
 
@@ -17,8 +18,8 @@ def run(catalog=None,ind=None,version='V0.0', npoints = 250, skipfit = 0):
     mattab = Table.read(datadir + 'catalogs/' + catalog + '_acat.fits', format='fits')
     mattab_i = mattab[ind]
     gaiaID  = mattab_i['GAIAEDR3_ID']
-    field=mattab_i['FIELD']
-    mjd=mattab_i['MJD']
+    #field=mattab_i['FIELD']
+    mjd=mattab_i['date']
     acat_id = mattab_i['ACAT_ID']
 
     try:
@@ -39,13 +40,11 @@ def run(catalog=None,ind=None,version='V0.0', npoints = 250, skipfit = 0):
 
 
 
-    samplefile = '{OUTDIR}{CATALOG}/{VER}/mwm_gaiaID_{GAIAID}_fieldID_{FIELDID}_mjd_{MJD}_catID_{CATID}_{VER}_samp.dat'.format(
-            OUTDIR = datadir + 'samples/',
-            FIELDID=mattab_i['FIELD'],
-            GAIAID=mattab_i['GAIAEDR3_ID'],
-            CATID=mattab_i['CATALOGID'],
-            MJD=mattab_i['MJD'],
+    samplefile = '{OUTDIR}{CATALOG}/{VER}/mage_{GAIAID}_{MJD}_{VER}_samp.dat'.format(
+            GAIAID=gaiaID,
+            MJD=mjd,
             VER=version,
+            OUTDIR=outdir,
             CATALOG=catalog)
 
     print('sample file is %s' %samplefile)

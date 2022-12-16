@@ -2,8 +2,8 @@ from astropy.table import Table
 import sys,argparse
 import os
 
-datadir = '/n/holyscratch01/conroy_lab/vchandra/sdss5/'
-pipedir = '/n/home03/vchandra/outerhalo/09_sdss5/pipeline/'
+datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+pipedir = '/n/home03/vchandra/outerhalo/08_mage/pipeline/'
 
 
 if __name__ == '__main__':
@@ -47,7 +47,7 @@ if __name__ == '__main__':
         print('logs dir exists for this catalog...')
 
 
-    print('submitting %i stars to MINESWEEPER...' % (arr2 - arr1))
+    print('submitting %i stars to MINESWEEPER...' % (arr2 - arr1 + 1))
 
     with open(pipedir + 'slurm/runms_template.txt', 'r') as f:
         script = f.readlines()
