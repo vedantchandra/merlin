@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from scipy import constants
 speedoflight = constants.c / 1000.0
 
-res_fac = 0.9 # increase theoretical resolution to avoid prior edge
+res_fac = 0.75 # increase theoretical resolution to avoid prior edge
 
 datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
 
@@ -55,7 +55,7 @@ def getdata(GaiaID = None, acat_id = None, date = None,
         np.isfinite(flux) & 
         (ivar > 0.0) & 
         (wave > 5000) &
-        (wave < 5450.0) &
+        (wave < 5300.0) &
         (ivar > 0)
     )
 
@@ -63,6 +63,8 @@ def getdata(GaiaID = None, acat_id = None, date = None,
     flux   = flux[cond]
     ivar = ivar[cond]
     mask = mask[cond]
+
+    # ADD REMOVE BAD PIXEL VIA SMOOTHED SIGMA REJECTION
 
     res_p = np.loadtxt('/n/home03/vchandra/outerhalo/08_mage/pipeline/control/res_sigma_p.txt')
     wresl = res_p[0] * wave + res_p[1]
