@@ -6,14 +6,14 @@ from quantiles import quantile
 from scipy import constants
 speedoflight = constants.c / 1000.0
 
-datadir = '/n/holyscratch01/conroy_lab/vchandra/sdss5/'
-specNN = datadir + 'ms/NN/modV0_spec_LinNet_R5K_WL445_565.h5'
-contNN = datadir + 'ms/NN/modV0_cont_LinNet_R12K_WL445_565.h5'
-photNN = datadir + 'ms/VARRV/'
-SBlib = datadir + 'ms/CKC/ckc_R500.h5'
-MISTgrid = datadir + 'ms/MIST_2.0_spot_EEPtrk_small.h5'
-outdir = datadir
+specNN = '/n/home03/vchandra/software/MS_files/NN/R12K/modV0_spec_LinNet_R12K_WL445_565.h5' # CHANGE THES
+contNN = '/n/home03/vchandra/software/MS_files/NN/R12K/modV0_cont_LinNet_R12K_WL445_565.h5' #'msdata/lowres/YSTANN_4000_7000_cont.h5' # FIT CONTINUUM_NORMALIZED
+photNN = '/n/home03/vchandra/software/MS_files/VARRV/'
+MISTgrid = '/n/home03/vchandra/software/MS_files/MIST_2.0_spot_EEPtrk_small.h5'
+datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+outdir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
 NNtype = 'LinNet'
+SBlib = '/n/home03/vchandra/software/MS_files/CKC/ckc_R500.h5'
 
 from minesweeper import genmod
 from minesweeper.fastMISTmod import GenMIST 
@@ -63,35 +63,36 @@ GMIST = GenMIST(
 
 def bfspec(specdata,bf):
     spec = {}
-    cond = specdata[2] != 0.0
-    spec['WAVE']   = specdata[0][cond]
-    spec['FLUX']   = specdata[1][cond]
-    spec['E_FLUX'] = 1.0/np.sqrt(specdata[2][cond])
-    spec['LSF']  = specdata[-1][cond]
 
-    cond = np.isfinite(spec['FLUX']) & np.isfinite(spec['E_FLUX']) & (spec['LSF'] > 0.0)
-    spec['WAVE']   = spec['WAVE'][cond]
-    spec['FLUX']   = spec['FLUX'][cond]
-    spec['E_FLUX'] = spec['E_FLUX'][cond]
-    spec['LSF']    = spec['LSF'][cond]
+    #cond = specdata[2] != 0.0
+    spec['WAVE']   = specdata['wave']
+    spec['FLUX']   = specdata['flux']
+    spec['E_FLUX'] = 1.0/np.sqrt(specdata['ivar'])
+    spec['WRESL']  = specdata['wresl']
 
-    # create the WRESL array
-    spec['WRESL'] = (spec['WAVE'] * spec['LSF']) / speedoflight
+    # cond = np.isfinite(spec['FLUX']) & np.isfinite(spec['E_FLUX']) & (spec['LSF'] > 0.0)
+    # spec['WAVE']   = spec['WAVE'][cond]
+    # spec['FLUX']   = spec['FLUX'][cond]
+    # spec['E_FLUX'] = spec['E_FLUX'][cond]
+    # spec['LSF']    = spec['LSF'][cond]
 
-    # cond = (spec['WAVE'] > 3850.0) & (spec['WAVE'] < 8900.0)
+    # # create the WRESL array
+    # spec['WRESL'] = (spec['WAVE'] * spec['LSF']) / speedoflight
+
+    # # cond = (spec['WAVE'] > 3850.0) & (spec['WAVE'] < 8900.0)
+    # # spec['WAVE']   = spec['WAVE'][cond]
+    # # spec['FLUX']   = spec['FLUX'][cond]
+    # # spec['E_FLUX'] = spec['E_FLUX'][cond]
+    # # spec['WRESL']  = spec['WRESL'][cond]
+
+    # # cond = (spec['WAVE'] > 4000.0) & (spec['WAVE'] < 7000.0)
+    # # cond = (spec['WAVE'] > 4455.0) & (spec['WAVE'] < 5645.0)
+    # # cond = (spec['WAVE'] > 5000.0) & (spec['WAVE'] < 5500.0)
+    # cond = (spec['WAVE'] > 4750.0) & (spec['WAVE'] < 5500.0)
     # spec['WAVE']   = spec['WAVE'][cond]
     # spec['FLUX']   = spec['FLUX'][cond]
     # spec['E_FLUX'] = spec['E_FLUX'][cond]
     # spec['WRESL']  = spec['WRESL'][cond]
-
-    # cond = (spec['WAVE'] > 4000.0) & (spec['WAVE'] < 7000.0)
-    # cond = (spec['WAVE'] > 4455.0) & (spec['WAVE'] < 5645.0)
-    # cond = (spec['WAVE'] > 5000.0) & (spec['WAVE'] < 5500.0)
-    cond = (spec['WAVE'] > 4750.0) & (spec['WAVE'] < 5500.0)
-    spec['WAVE']   = spec['WAVE'][cond]
-    spec['FLUX']   = spec['FLUX'][cond]
-    spec['E_FLUX'] = spec['E_FLUX'][cond]
-    spec['WRESL']  = spec['WRESL'][cond]
 
     # # mask out Na doublet due to ISM absorption
     # cond = (spec['WAVE'] < 5850.0) | (spec['WAVE'] > 5950.0)
@@ -236,14 +237,18 @@ def run(index=None,GaiaID=None,version='VX',catalog = None, acat_id = None):
 
     photcat = data['phot']
 
-    samplefile = '{OUTDIR}{CATALOG}/{VER}/mwm_gaiaID_{GAIAID}_fieldID_{FIELDID}_mjd_{MJD}_catID_{CATID}_{VER}_samp.dat'.format(
-            OUTDIR = outdir + 'samples/',
-            FIELDID=data['phot']['FIELD'],
+
+    samplefile = 'mage_{GAIAID}_{MJD}_{VER}_samp.dat'.format(
             GAIAID=data['phot']['GAIAEDR3_ID'],
-            CATID=data['phot']['CATALOGID'],
-            MJD=data['phot']['MJD'],
-            VER=version,
-            CATALOG=catalog)
+            MJD=data['phot']['date'],
+            VER=version)
+
+    samplefile = '{OUTDIR}samples/{CATALOG}/{VER}/{SAMPLEFILE}'.format(
+            OUTDIR=outdir,
+            SAMPLEFILE=samplefile,
+            CATALOG = catalog,
+            VER=version)
+
     samplefile_gz = samplefile + '.gz'
 
     try:
@@ -329,12 +334,10 @@ def run(index=None,GaiaID=None,version='VX',catalog = None, acat_id = None):
         outdict[pp+'_err'] = np.nan 
     outdict = PH.calcphase(outdict,nsamples=50000,verbose=False)
 
-    outfile = '{OUTDIR}{CATALOG}/{VER}/mwm_gaiaID_{GAIAID}_fieldID_{FIELDID}_mjd_{MJD}_catID_{CATID}_{VER}.pars'.format(
+    outfile = '{OUTDIR}{CATALOG}/{VER}/mage_{GAIAID}_{MJD}_{VER}.pars'.format(
         OUTDIR=outdir + 'pars/',
-        FIELDID=data['phot']['FIELD'],
         GAIAID=data['phot']['GAIAEDR3_ID'],
-        CATID=data['phot']['CATALOGID'],
-        MJD=data['phot']['MJD'],
+        MJD=data['phot']['date'],
         VER=version,
         CATALOG = catalog)
 

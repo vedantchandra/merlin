@@ -28,15 +28,14 @@ from minesweeper.advancedpriors import AdvancedPriors
 # datadir = '/n/holystore01/LABS/conroy_lab/Lab/SEGUE/data/'
 # outdir  = '/n/holyscratch01/conroy_lab/pacargile/SEGUE/'
 
-datadir = '/n/holyscratch01/conroy_lab/vchandra/sdss5/'
-specNN = datadir + 'ms/NN/modV0_spec_LinNet_R5K_WL445_565.h5'
-contNN = datadir + 'ms/NN/modV0_cont_LinNet_R12K_WL445_565.h5'
-photNN = datadir + 'ms/VARRV/'
-SBlib = datadir + 'ms/CKC/ckc_R500.h5'
-MISTgrid = datadir + 'ms/MIST_2.0_spot_EEPtrk_small.h5'
-outdir = datadir
+specNN = '/n/home03/vchandra/software/MS_files/NN/R12K/modV0_spec_LinNet_R12K_WL445_565.h5' # CHANGE THES
+contNN = '/n/home03/vchandra/software/MS_files/NN/R12K/modV0_cont_LinNet_R12K_WL445_565.h5' #'msdata/lowres/YSTANN_4000_7000_cont.h5' # FIT CONTINUUM_NORMALIZED
+photNN = '/n/home03/vchandra/software/MS_files/VARRV/'
+MISTgrid = '/n/home03/vchandra/software/MS_files/MIST_2.0_spot_EEPtrk_small.h5'
+datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+outdir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
 NNtype = 'LinNet'
-
+SBlib = '/n/home03/vchandra/software/MS_files/CKC/ckc_R500.h5'
 
 def run(index=None,GaiaID=None,version='VX',catalog=None,
     acat_id = None):
@@ -58,14 +57,17 @@ def run(index=None,GaiaID=None,version='VX',catalog=None,
 
     photcat = data['phot']
 
-    samplefile = '{OUTDIR}/{CATALOG}/{VER}/mwm_gaiaID_{GAIAID}_fieldID_{FIELDID}_mjd_{MJD}_catID_{CATID}_{VER}_samp.dat'.format(
-            OUTDIR = outdir + 'samples/',
-            FIELDID=data['phot']['FIELD'],
+    samplefile = 'mage_{GAIAID}_{MJD}_{VER}_samp.dat'.format(
             GAIAID=data['phot']['GAIAEDR3_ID'],
-            CATID=data['phot']['CATALOGID'],
-            MJD=data['phot']['MJD'],
-            VER=version,
-            CATALOG = catalog)
+            MJD=data['phot']['date'],
+            VER=version)
+
+    samplefile = '{OUTDIR}samples/{CATALOG}/{VER}/{SAMPLEFILE}'.format(
+            OUTDIR=outdir,
+            SAMPLEFILE=samplefile,
+            CATALOG = catalog,
+            VER=version)
+
     samplefile_gz = samplefile + '.gz'
 
     # try:
@@ -108,14 +110,12 @@ def run(index=None,GaiaID=None,version='VX',catalog=None,
 
     parstring = (
         'Run index: {} '.format(photcat['ACAT_ID'])+
-        'Field ID: {}\n'.format(photcat['FIELD'])+
         'GaiaEDR3 ID: {}\n'.format(photcat['GAIAEDR3_ID'])+
         'RA: {:n} '.format(photcat['RA'])+'Dec: {:n}\n'.format(photcat['DEC'])+
         'L: {:n} '.format(photcat['L'])+'B: {:n}\n'.format(photcat['B'])+
         'PS_g = {0:n} +/- {1:n}\n'.format(photcat['PS_G'],photcat['PS_G_ERR'])+
         'GaiaEDR3_G = {0:n} +/- {1:n}\n'.format(photcat['GAIAEDR3_G_CORRECTED'],photcat['GAIAEDR3_G_ERR'])+
-        'GaiaEDR3_Parallax = {0:n} +/- {1:n}\n'.format(photcat['GAIAEDR3_PARALLAX_CORRECTED'],photcat['GAIAEDR3_PARALLAX_ERROR'])+
-        'SNR = {:n}\n'.format(photcat['SN_MEDIAN_ALL'])
+        'GaiaEDR3_Parallax = {0:n} +/- {1:n}\n'.format(photcat['GAIAEDR3_PARALLAX_CORRECTED'],photcat['GAIAEDR3_PARALLAX_ERROR'])
         )
 
     for ff in fitpars:
@@ -336,12 +336,11 @@ def run(index=None,GaiaID=None,version='VX',catalog=None,
 
     fig.align_labels()
 
-    cornerfile = '{OUTDIR}{CATALOG}/{VER}/mwm_gaiaID_{GAIAID}_fieldID_{FIELDID}_mjd_{MJD}_catID_{CATID}_{VER}_corner.png'.format(
+
+    cornerfile = '{OUTDIR}{CATALOG}/{VER}/mage_{GAIAID}_{MJD}_{VER}_corner.png'.format(
         OUTDIR=outdir + 'plots/',
-        FIELDID=data['phot']['FIELD'],
         GAIAID=data['phot']['GAIAEDR3_ID'],
-        CATID=data['phot']['CATALOGID'],
-        MJD=data['phot']['MJD'],
+        MJD=data['phot']['date'],
         VER=version,
         CATALOG=catalog)
 

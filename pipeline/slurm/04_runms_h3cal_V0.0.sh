@@ -20,4 +20,4 @@ echo $SLURM_JOB_PARTITION
 echo 'NODE NAME:' 
 echo $SLURMD_NODENAME 
 
-python 04_runms_star.py --catalog=h3cal --ind=$SLURM_ARRAY_TASK_ID --version=V0.0 --npoints=750 --skipfit=0
+python 04_runms_star.py --catalog=h3cal --ind=$SLURM_ARRAY_TASK_ID --version=V0.0 --npoints=250 --skipfit=0

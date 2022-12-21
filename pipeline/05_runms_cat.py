@@ -11,7 +11,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--catalog',help='catalog to use as input',type=str,default=None)
     parser.add_argument('--version',help='Version of run',type=str,default='V0.0')
-    parser.add_argument('--npoints',help='number of points',type=int,default=750)
+    parser.add_argument('--npoints',help='number of points',type=int,default=250)
     parser.add_argument('--skipfit',help='skip MS fit',type=int,default=0)
     parser.add_argument('--submit', action='store_true')
     parser.add_argument('--no-submit', dest='submit', action='store_false')
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     npoints = args.npoints
     skipfit = args.skipfit
     submit = args.submit
-    arr1 = args.arr1
+    arr1 = args.arr1 
     arr2 = args.arr2
 
     if catalog is None:

@@ -13,15 +13,18 @@
 # 12/12/2022: disable spatial flexure, increase RMS threshold to 0.4 for wavecal
 # 			  change input file handling to match pypeit v1.11.1 syntax
 #			  skipred now automatically disables restart, to keep master files
-# 12/12/2022: change xe-flash to trace only, set edgethresh=3 to prevent reddest slit being skipped
+# 12/12/2022: change xe-flash to trace only
 #			  turn off global_sky_std 
+# 12/20/2022: add hip108327 to standards. raise error now if flux standard missing from lib
+#             set edge thresh to 3, now only use xe-flash for tracing (not red flat)
+#             set findobj snr_thresh 10 -> 3
 
 ###############################################################################################
 
 # make a library of your flux standards here
 # the code will find the relevant flux standard within the directory
 
-flux_standards = ['hip77', 'hip67523', 'hip104326'] 
+flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327'] 
 
 ###############################################################################################
 # IMPORTS
@@ -199,7 +202,7 @@ for row in log:
 	## reset file types
 	
 	if 'flat' in row['target'].lower():
-		row['frametype'] = 'trace,illumflat,pixelflat'
+		row['frametype'] = 'illumflat,pixelflat'
 	elif 'flash' in row['target'].lower():
 		row['frametype'] = 'trace'
 	elif 'j' in row['target'].lower():
@@ -236,7 +239,7 @@ for name in log['target']:
 		
 if telluric is None:
 	print('there is no flux standard from the library in this folder!')
-	# raise
+	raise
 else:
 	print('using %s as the flux standard...' % telluric)
 
@@ -292,11 +295,12 @@ for line in lines:
 		newlines.append('  [[wavelengths]]\n')
 		newlines.append('    rms_threshold=0.4\n')
 		newlines.append('  [[slitedges]]\n')
-		newlines.append('    edge_thresh=10\n')
+		newlines.append('    edge_thresh=3\n')
 
 		newlines.append('[reduce]\n')
 		newlines.append('  [[findobj]]\n')
 		newlines.append('    maxnumber_sci=1\n')
+		newlines.append('    snr_thresh=3\n')
 		newlines.append('  [[skysub]]\n')
 		newlines.append('    global_sky_std=False\n')
 		

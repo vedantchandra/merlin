@@ -68,6 +68,7 @@ def run(catalog=None,ind=None,version='V0.0', npoints = 250, skipfit = 0):
     # sys.stdout.flush()
 
     if skipfit == 0:
+        print('running MS...')
         sys.stdout.flush()
         runMS.run(acat_id = acat_id,version=version,catalog = catalog, npoints = npoints)
     elif skipfit == 1:
@@ -76,12 +77,16 @@ def run(catalog=None,ind=None,version='V0.0', npoints = 250, skipfit = 0):
         print('invalid skipfit value! must be 0 or 1')
         raise
     sys.stdout.flush()
+    print('running compmod...')
     compmod.run(acat_id = acat_id,version=version,catalog = catalog)
     sys.stdout.flush()
+    print('running corner...')
     corner.run(acat_id = acat_id,version=version,catalog = catalog)
     sys.stdout.flush()
+    print('running calcpars...')
     calcpars.run(acat_id = acat_id,version=version,catalog = catalog)
     sys.stdout.flush()
+    print('finished 04_runms_star!')
 
 
 
