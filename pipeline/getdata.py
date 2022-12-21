@@ -6,9 +6,11 @@ from astropy import units as u
 import glob
 import matplotlib.pyplot as plt
 from scipy import constants
+import scipy.signal
+
 speedoflight = constants.c / 1000.0
 
-res_fac = 0.75 # increase theoretical resolution to avoid prior edge
+res_fac = 0.5 # increase theoretical resolution to avoid prior edge
 
 datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
 
@@ -54,8 +56,8 @@ def getdata(GaiaID = None, acat_id = None, date = None,
     cond = (
         np.isfinite(flux) & 
         (ivar > 0.0) & 
-        (wave > 5000) &
-        (wave < 5300.0) &
+        (wave > 4800) &
+        (wave < 5500.0) &
         (ivar > 0)
     )
 
@@ -64,7 +66,19 @@ def getdata(GaiaID = None, acat_id = None, date = None,
     ivar = ivar[cond]
     mask = mask[cond]
 
-    # ADD REMOVE BAD PIXEL VIA SMOOTHED SIGMA REJECTION
+    # REMOVE BAD PIXEL VIA SMOOTHED SIGMA REJECTION
+
+    mfl = scipy.signal.medfilt(flux, 5)
+    diff = (flux - mfl)
+    std = (np.quantile(diff, 0.84) - np.quantile(diff, 0.16)) / 2
+    nsigma = np.abs(diff / std)
+    badpix = nsigma > 10
+    cond = ~badpix
+
+    wave   = wave[cond]
+    flux   = flux[cond]
+    ivar = ivar[cond]
+    mask = mask[cond]
 
     res_p = np.loadtxt('/n/home03/vchandra/outerhalo/08_mage/pipeline/control/res_sigma_p.txt')
     wresl = res_p[0] * wave + res_p[1]

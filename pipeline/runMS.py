@@ -192,9 +192,9 @@ def run(GaiaID=None,version='VX', npoints = 250,catalog = None,
     inputdict['spec']['modpoly'] = True
     inputdict['spec']['convertair'] = False
 
-    maxdist = 1000.0/(parallax-10.0*parallax_error)
-    if maxdist < 0.0:
-        maxdist = np.inf
+    maxdist = 250000#1000.0/(parallax-10.0*parallax_error). GETS OVERRIDDEN LATER
+    #if maxdist < 0.0:
+    #    maxdist = np.inf
     mindist = 1000.0/(parallax+10.0*parallax_error)
 
     print('    ... Building Sampler Options')
@@ -221,7 +221,7 @@ def run(GaiaID=None,version='VX', npoints = 250,catalog = None,
     inputdict['priordict']['initial_Mass'] = {'pv_uniform':[0.2,3.0]}
     inputdict['priordict']['initial_[Fe/H]'] = {'pv_uniform':[-4.0,0.5]}
     inputdict['priordict']['initial_[a/Fe]'] = {'pv_uniform':[-0.2,0.6]}
-    inputdict['priordict']['Dist']   = {'pv_uniform':[max([1.0,mindist]),min([maxdist,200000.0])]}
+    inputdict['priordict']['Dist']   = {'pv_uniform':[max([1.0,mindist]), maxdist]}
     inputdict['priordict']['Av']     = {'pv_tgaussian':[0.0,3.0*Av,Av,Av*0.15]}
 
     inputdict['priordict']['Age'] = {'uniform':[1.0,17.0]}
@@ -238,15 +238,16 @@ def run(GaiaID=None,version='VX', npoints = 250,catalog = None,
     # inputdict['priordict']['Inst_R'] = {'fixed':3000.0}
 
     inputdict['priordict']['IMF'] = {'IMF_type':'Kroupa'}
-    inputdict['priordict']['GAL'] = {'lb_coords':[float(data['phot']['L']),float(data['phot']['B'])]}
+    
+    #inputdict['priordict']['GAL'] = {'lb_coords':[float(data['phot']['L']),float(data['phot']['B'])]}
 
-    inputdict['priordict']['GALAGE'] = {}
-    inputdict['priordict']['GALAGE']['lb_coords'] = [float(data['phot']['L']),float(data['phot']['B'])]
-    inputdict['priordict']['GALAGE']['pars'] = ({
-        'thin': {'min':1.0,'max':14.0},
-        'thick':{'min':6.0,'max':14.0,'mean':10.0,'sigma':2.0},
-        'halo': {'min':8.0,'max':14.0,'mean':12.0,'sigma':2.0},
-        })
+    #inputdict['priordict']['GALAGE'] = {}
+    #inputdict['priordict']['GALAGE']['lb_coords'] = [float(data['phot']['L']),float(data['phot']['B'])]
+    #inputdict['priordict']['GALAGE']['pars'] = ({
+    #    'thin': {'min':1.0,'max':14.0},
+    #    'thick':{'min':6.0,'max':14.0,'mean':10.0,'sigma':2.0},
+    #    'halo': {'min':8.0,'max':14.0,'mean':12.0,'sigma':2.0},
+    #    })
 
     # inputdict['priordict']['VROT'] = {'giant':{'a':-10.0,'c':7.0,'n':1.0},'dwarf':{'a':-10.0,'c':10.0,'n':0.4}}
 
