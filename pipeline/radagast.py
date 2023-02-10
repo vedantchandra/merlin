@@ -24,7 +24,7 @@
 # make a library of your flux standards here
 # the code will find the relevant flux standard within the directory
 
-flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946'] 
+flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946', 'hip66765'] 
 
 ###############################################################################################
 # IMPORTS
@@ -172,6 +172,8 @@ log.remove_column('calib')
 sci = np.array(['j' in name for name in log['target']])
 std = np.array(['hip' in name.lower() for name in log['target']])
 arc = np.array(['thar' in name.lower() for name in log['target']])
+
+print(std)
 
 n_cal = np.sum(sci) + np.sum(std)
 dummy_cal = 0
