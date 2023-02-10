@@ -170,7 +170,7 @@ for row in log:
 log.remove_column('calib')
 
 sci = np.array(['j' in name for name in log['target']])
-std = np.array(['hip' in name for name in log['target']])
+std = np.array(['hip' in name.lower() for name in log['target']])
 arc = np.array(['thar' in name.lower() for name in log['target']])
 
 n_cal = np.sum(sci) + np.sum(std)
@@ -234,7 +234,7 @@ ascii.write(log[logcol], format = 'fixed_width', output = rawdir + 'obslog_edite
 
 telluric = None
 for name in log['target']:
-	if name in flux_standards:
+	if name.lower() in flux_standards:
 		telluric = name
 		
 if telluric is None:
