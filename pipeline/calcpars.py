@@ -127,7 +127,9 @@ def bfspec(specdata,bf):
     chisq_spec = np.nansum([((m-d)/s)**2.0 for m,d,s in zip(bfflux,spec['FLUX'],spec['E_FLUX'])])
     nspecpix = len(bfflux)
 
-    return chisq_spec,nspecpix
+    snr = np.median(spec['FLUX'] / spec['E_FLUX'])
+
+    return chisq_spec,nspecpix,snr
 
 def bfphot(phdata,bf):
 
@@ -310,7 +312,7 @@ def run(index=None,GaiaID=None,version='VX',catalog = None, acat_id = None):
     outdict['lnP'] = np.log(samp['Pr'].max())
 
     # calc chi-sq and add
-    outdict['chisq_spec'],outdict['nspecpix'] = bfspec(data['spec'],outdict)
+    outdict['chisq_spec'],outdict['nspecpix'],outdict['spec_snr'] = bfspec(data['spec'],outdict)
     outdict['chisq_phot'],outdict['nbands'] = bfphot(data['phot'],outdict)
 
     # doing phase-a-fy

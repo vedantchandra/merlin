@@ -125,6 +125,7 @@ class mkrcat(object):
             "nspecpix",
             "chisq_phot",
             "nbands",
+            "spec_snr",
             "R_gal",
             "R_gal_err",
             "X_gal",
@@ -184,7 +185,8 @@ class mkrcat(object):
         try:
             pars = Table.read(parfile,format='ascii')
         except:
-            raise
+            #raise
+            print('failed!!!')
             return
 
         #print(pars)
@@ -286,7 +288,9 @@ class mkrcat(object):
             if nc == 'nbands':
                 rcat[nc] = np.zeros(len(rcat),dtype=int)
             elif nc == 'nspecpix':
-                rcat[nc] = np.zeros(len(rcat),dtype=int)            
+                rcat[nc] = np.zeros(len(rcat),dtype=int)  
+            elif nc == 'spec_snr':
+                rcat[nc] = np.nan * len(rcat)     
             else:
                 rcat[nc] = np.nan * len(rcat)
 

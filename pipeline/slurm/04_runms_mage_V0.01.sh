@@ -20,4 +20,4 @@ echo $SLURM_JOB_PARTITION
 echo 'NODE NAME:' 
 echo $SLURMD_NODENAME 
 
-python 04_runms_star.py --catalog=mage --ind=$SLURM_ARRAY_TASK_ID --version=V0.01 --npoints=500 --skipfit=0
+python 04_runms_star.py --catalog=mage --ind=$SLURM_ARRAY_TASK_ID --version=V0.01 --npoints=500 --skipfit=1

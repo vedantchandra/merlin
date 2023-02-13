@@ -270,6 +270,8 @@ def mksed(axSED,samples,photdata,bfdict):
     # axSED.set_xticklabels([])
 
 def mkkiel(axkiel,samples):
+
+    samples = samples[samples['Pr'] > 1E-10] # fixed bug of NaN params
     Teffbf = quantile(samples['Teff'],  [0.0001,0.16,0.5,0.84,0.9999],weights=samples['Pr'])
     loggbf = quantile(samples['log(g)'],[0.0001,0.16,0.5,0.84,0.9999],weights=samples['Pr'])
     # fehbf  = quantile(samples['[Fe/H]'],[0.0001,0.16,0.5,0.84,0.9999],weights=samples['Pr'])

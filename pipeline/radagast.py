@@ -161,6 +161,8 @@ os.system('pypeit_obslog -r %s -d %s -o -f obslog.txt magellan_mage' % (rawdir, 
 log = ascii.read(rawdir + 'obslog.txt', format = 'fixed_width')
 logcol = list(log.columns)
 
+log['target'] = [target.lower() for target in log['target']]
+
 # ANY SPECIAL-CASE FILES THAT NEED PROCESSING
 
 for row in log:
@@ -391,7 +393,11 @@ for outfile in outfiles:
 
 			plt.sca(axs.ravel()[order])
 
-			wl, fl, ivar = f[order+1].data['OPT_WAVE'], f[order+1].data['OPT_COUNTS'], f[order+1].data['OPT_COUNTS_IVAR']
+			try:
+				wl, fl, ivar = f[order+1].data['OPT_WAVE'], f[order+1].data['OPT_COUNTS'], f[order+1].data['OPT_COUNTS_IVAR']
+			except:
+				print('order preview failed for %s order %i' % (name, order))
+				continue
 			sig = 1 / np.sqrt(ivar)
 			snr = np.nanmedian(fl * np.sqrt(ivar))
 
