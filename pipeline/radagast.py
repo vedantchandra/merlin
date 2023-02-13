@@ -450,6 +450,7 @@ with open(scidir + 'make_sens.sens', 'w') as f:
 tellfiles = glob.glob(scidir + 'spec1d*%s*.fits' % telluric)
 print('there are %i telluric files, picking the first one...' % len(tellfiles))
 tellfile = tellfiles[0] # assume you only use 1 telluric exposure
+print('using %s as the telluric' % tellfile)
 
 print('making sensitivity function...')
 
