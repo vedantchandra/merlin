@@ -52,20 +52,20 @@ for file in (specfiles):
 # COLLATE PLOTS
 ################################
 
-plotfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/202*/reduced_%s/magellan_mage_A/plots/*.png' % ver)
+# plotfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/202*/reduced_%s/magellan_mage_A/plots/*.png' % ver)
 
-for file in (plotfiles):
-    name = file.split('/')[-1].replace('.png', '')
-    date = file.split('/')[-5]
+# for file in (plotfiles):
+#     name = file.split('/')[-1].replace('.png', '')
+#     date = file.split('/')[-5]
 
-    if name == 'j2035m2245': # mis-named file in header
-        name = 'j2035m2445'
+#     if name == 'j2035m2245': # mis-named file in header
+#         name = 'j2035m2445'
     
-    outname = date + '_' + name + '.fits'
+#     outname = date + '_' + name + '.fits'
     
-    cmd = 'rsync -vzr %s %s%s' % (file, plotdir2, outname)
+#     cmd = 'rsync -vzr %s %s%s' % (file, plotdir2, outname)
     
-    os.system(cmd)
+#     os.system(cmd)
 
 ################################
 # MAKE SPALL
@@ -110,6 +110,9 @@ print('there are %i observations in spall, for %i unique targets...' % (len(spal
 ################################
 
 tdb = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2022b.fits')
+tdb23a = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2023a.fits')
+
+tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a)), keys = 'name')
 
 for key in list(tdb.columns):
     if key == 'name':
@@ -118,7 +121,12 @@ for key in list(tdb.columns):
     tdb.rename_column(key, 'tdb_' + key)
 
 spall_tdb = astropy.table.join(spall, tdb, keys = 'name', join_type = 'left')
+isnan = spall_tdb['tdb_ra'].mask
 
 print('there are %i rows after matching to targetDB...' % len(spall_tdb))
+print('there are %i NaN coordinates, removing from spall:' % np.sum(isnan))
+print(list(spall_tdb[isnan]['name']))
+spall_tdb= spall_tdb[~isnan]
+print('there are %i rows after removing nans...' % len(spall_tdb))
 
 spall_tdb.write('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/spall.fits', overwrite = True)

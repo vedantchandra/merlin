@@ -24,7 +24,7 @@
 # make a library of your flux standards here
 # the code will find the relevant flux standard within the directory
 
-flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946', 'hip66765'] 
+flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946',] 
 
 ###############################################################################################
 # IMPORTS
@@ -240,6 +240,7 @@ telluric = None
 for name in log['target']:
 	if name.lower() in flux_standards:
 		telluric = name
+		break # use the first telluric in the list
 		
 if telluric is None:
 	print('there is no flux standard from the library in this folder!')
@@ -454,8 +455,13 @@ print('using %s as the telluric' % tellfile)
 
 print('making sensitivity function...')
 
-os.system('pypeit_sensfunc %s -o sensfunc.fits -s make_sens.sens' % tellfile) # if you want debug plots, add --debug here
+status = os.system('pypeit_sensfunc %s -o sensfunc.fits -s make_sens.sens' % tellfile) # if you want debug plots, add --debug here
 
+print(status)
+
+if status != 0:
+	print('error running pypeit_sensfunc!!')
+	raise
 
 scifiles = glob.glob(scidir + 'spec1d*.fits')
 
@@ -581,7 +587,11 @@ print('making coadd preview plots...')
 for target in targets:
 	coaddfile = scidir + 'coadd/' + target + '_coadd.fits'
 
-	f = fits.open(coaddfile)
+	try:
+		f = fits.open(coaddfile)
+	except:
+		print('failed to open coadd file for %s' % coaddfile)
+		continue
 	
 	f[0].header
 
@@ -609,6 +619,7 @@ for target in targets:
 	plt.close()
 	f.close()
 
+print('finished making coadd previews...')
 
 ###############################################################################################
 # END

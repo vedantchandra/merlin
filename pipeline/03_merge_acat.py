@@ -34,6 +34,8 @@ for file in infiles:
 
 acat.remove_columns(['UNWISE_FRACFLUX', 'UNWISE_FLAGS', 'UNWISE_INFO_FLAGS'])
 
+acat = acat[np.argsort(acat['mage_mjd'])]
+
 acat['ACAT_ID'] = np.arange(len(acat))
 
 print('there are %i stars in the ACAT' % len(acat))

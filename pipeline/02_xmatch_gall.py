@@ -32,6 +32,8 @@ galidx = int(sys.argv[1])
 bigcat = charlie_cats[galidx]
 table = Table.read(infile)
 
+# isnan = np.isnan(table['tdb_ra']) | np.isnan(table['tdb_dec'])
+
 #outtab = Table();
 
 c = SkyCoord(ra=table['tdb_ra'] * u.degree, dec = table['tdb_dec']*u.degree)
