@@ -8,7 +8,7 @@
 #SBATCH --constraint='intel'
 #SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/mage/V0.03/%a.out
 #SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/mage/V0.03/%a.err
-#SBATCH --array=255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,275
+#SBATCH --array=276,277,278,279,281,282,283,284,285,286,287,288,289,290,291,292,293,294
 
 source /n/home03/vchandra/warmup.sh
 

@@ -11,9 +11,7 @@ def run(catalog=None,ind=None,version='V0.0', npoints = 250, skipfit = 0):
 
     if skipfit == 0:
         import runMS
-    import compmod
-    import corner
-    import calcpars
+
 
     mattab = Table.read(datadir + 'catalogs/' + catalog + '_acat.fits', format='fits')
     mattab_i = mattab[ind]
@@ -77,14 +75,18 @@ def run(catalog=None,ind=None,version='V0.0', npoints = 250, skipfit = 0):
         print('invalid skipfit value! must be 0 or 1')
         raise
     sys.stdout.flush()
+    print('running calcpars...')
+
+    import calcpars
+    calcpars.run(acat_id = acat_id,version=version,catalog = catalog)
+    sys.stdout.flush()
     print('running compmod...')
+    import compmod
     compmod.run(acat_id = acat_id,version=version,catalog = catalog)
     sys.stdout.flush()
     print('running corner...')
+    import corner
     corner.run(acat_id = acat_id,version=version,catalog = catalog)
-    sys.stdout.flush()
-    print('running calcpars...')
-    calcpars.run(acat_id = acat_id,version=version,catalog = catalog)
     sys.stdout.flush()
     print('finished 04_runms_star!')
 

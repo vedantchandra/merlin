@@ -271,7 +271,13 @@ def mksed(axSED,samples,photdata,bfdict):
 
 def mkkiel(axkiel,samples):
 
-    samples = samples[samples['Pr'] > 1E-10] # fixed bug of NaN params
+    samples = samples.filled(np.nan)
+
+    samples = samples[(samples['Pr'] > 1E-10)&(~np.isnan(samples['Pr']))&(np.isfinite(samples['Pr']))] # fixed bug of NaN params
+    samples['Pr'] = samples['Pr'] / np.nansum(samples['Pr'])
+
+
+
     Teffbf = quantile(samples['Teff'],  [0.0001,0.16,0.5,0.84,0.9999],weights=samples['Pr'])
     loggbf = quantile(samples['log(g)'],[0.0001,0.16,0.5,0.84,0.9999],weights=samples['Pr'])
     # fehbf  = quantile(samples['[Fe/H]'],[0.0001,0.16,0.5,0.84,0.9999],weights=samples['Pr'])
@@ -288,6 +294,10 @@ def mkkiel(axkiel,samples):
     #     transform=axkiel.transAxes,fontsize=8)
 
     data = np.vstack([samples['Teff'], samples['log(g)']])
+    print(np.isnan(data).any())
+    print(data)
+    print(np.isnan(samples['Pr']).any())
+    print(samples['Pr'])
     kde = gaussian_kde(data,weights=samples['Pr'])
 
     # evaluate on a regular grid
@@ -359,8 +369,7 @@ def run(index=None,GaiaID=None,version='VX',verbose=False,catalog = None,
     # read in SEGUE data
     # SD = SegueData(survey=survey,tileID=tileID,mjd=mjd)
 
-    if index is not None:
-        data = getdata(index=index)
+
     if GaiaID is not None:
         data = getdata(GaiaID=GaiaID)
     if acat_id is not None:
@@ -517,7 +526,12 @@ def run(index=None,GaiaID=None,version='VX',verbose=False,catalog = None,
         return
 
     samp['Pr'] = np.exp(samp['log(wt)']-samp['log(z)'][-1])
-    samp = samp[samp['Pr'] > 0.0]
+    samp = samp[samp['Pr'] > 1e-10]
+    samp['Pr'] = samp['Pr'] / np.sum(samp['Pr'])
+    samp.remove_column('Inst_R')
+    sampval = np.lib.recfunctions.structured_to_unstructured(np.array(samp))
+    print(np.isnan(sampval).any())
+    samp = samp.filled(np.nan)
 
     maxlike = np.argmax(samp['log(lk)'])
 
