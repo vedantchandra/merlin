@@ -24,7 +24,7 @@
 # make a library of your flux standards here
 # the code will find the relevant flux standard within the directory
 
-flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946',] 
+flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946', 'hip51633'] 
 
 ###############################################################################################
 # IMPORTS
