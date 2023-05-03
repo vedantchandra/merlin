@@ -396,8 +396,9 @@ for outfile in outfiles:
 
 			try:
 				wl, fl, ivar = f[order+1].data['OPT_WAVE'], f[order+1].data['OPT_COUNTS'], f[order+1].data['OPT_COUNTS_IVAR']
-			except:
+			except Exception as e:
 				print('order preview failed for %s order %i' % (name, order))
+				print(e)
 				continue
 			sig = 1 / np.sqrt(ivar)
 			snr = np.nanmedian(fl * np.sqrt(ivar))
