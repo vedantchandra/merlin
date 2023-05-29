@@ -224,7 +224,9 @@ def run(GaiaID=None,version='VX', npoints = 250,catalog = None,
     inputdict['priordict']['Dist']   = {'pv_uniform':[max([1.0,mindist]), maxdist]}
     inputdict['priordict']['Av']     = {'pv_tgaussian':[0.0,3.0*Av,Av,Av*0.15]}
 
-    inputdict['priordict']['Age'] = {'uniform':[1.0,17.0]}
+    #inputdict['priordict']['Age'] = {'uniform':[1.0,17.0]}
+    inputdict['priordict']['Age'] = {'tgaussian':[4.0,14.0,10.0,4]}
+    #inputdict['priordict']['Age'] = {'uniform':[4.0,14.0]}
     inputdict['priordict']['Parallax'] =  {'gaussian':[parallax,parallax_error]}
 
     numpoly = 4
@@ -241,12 +243,12 @@ def run(GaiaID=None,version='VX', npoints = 250,catalog = None,
     
     #inputdict['priordict']['GAL'] = {'lb_coords':[float(data['phot']['L']),float(data['phot']['B'])]}
 
-    #inputdict['priordict']['GALAGE'] = {}
-    #inputdict['priordict']['GALAGE']['lb_coords'] = [float(data['phot']['L']),float(data['phot']['B'])]
-    #inputdict['priordict']['GALAGE']['pars'] = ({
+    # inputdict['priordict']['GALAGE'] = {}
+    # inputdict['priordict']['GALAGE']['lb_coords'] = [float(data['phot']['L']),float(data['phot']['B'])]
+    # inputdict['priordict']['GALAGE']['pars'] = ({
     #    'thin': {'min':1.0,'max':14.0},
     #    'thick':{'min':6.0,'max':14.0,'mean':10.0,'sigma':2.0},
-    #    'halo': {'min':8.0,'max':14.0,'mean':12.0,'sigma':2.0},
+    #    'halo': {'min':6.0,'max':14.0,'mean':10.0,'sigma':5.0},
     #    })
 
     # inputdict['priordict']['VROT'] = {'giant':{'a':-10.0,'c':7.0,'n':1.0},'dwarf':{'a':-10.0,'c':10.0,'n':0.4}}

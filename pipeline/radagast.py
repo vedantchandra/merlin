@@ -300,7 +300,7 @@ for line in lines:
 		newlines.append('  [[wavelengths]]\n')
 		newlines.append('    rms_threshold=0.4\n')
 		newlines.append('  [[slitedges]]\n')
-		newlines.append('    edge_thresh=3\n')
+		newlines.append('    edge_thresh=1\n')
 
 		newlines.append('[reduce]\n')
 		newlines.append('  [[findobj]]\n')
