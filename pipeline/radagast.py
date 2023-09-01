@@ -225,6 +225,25 @@ for row in log:
 		
 	row['comb_id'] = -1
 
+# combine science frames with the same target name
+
+uniq_targets = list(np.unique(log['target']))
+print('unique targets are:')
+print(uniq_targets)
+
+coadd_ctr = 1
+for ctr,targ in enumerate(uniq_targets):
+
+	if 'j' in targ or 'hip' in targ:
+		sel = log['target'] == targ
+
+		log['comb_id'][sel] = coadd_ctr
+		log['calib'][sel] = log['calib'][sel][0]
+
+		coadd_ctr += 1
+
+# Set calib strings
+
 
 log['arcfile_str'] = [file.strip() for file in log['arcfile']]
 for row in log:
@@ -234,12 +253,10 @@ for row in log:
 		if np.sum(scisel) == 0:
 			row['calib'] = str(dummy_cal)
 			continue
-		calibs = list(log[scisel]['calib'])
+		calibs = np.unique(list(log[scisel]['calib'])) # np unique here prevents dupes
 		cal_str = ",".join(str(x) for x in calibs)
 		
 		row['calib'] = cal_str
-
-ascii.write(log[logcol], format = 'fixed_width', output = rawdir + 'obslog_edited.txt', overwrite = True)
 
 # find which star is the flux standard
 
@@ -255,6 +272,26 @@ if telluric is None:
 else:
 	print('using %s as the flux standard...' % telluric)
 
+
+# prevent 'all' in error by setting explicit ints for all calibs. nope this is not a problem
+
+# calib_ints = list(log['calib'])
+# calib_ints = ','.join(calib_ints)
+# calib_ints = calib_ints.replace('all,', '')
+# print(calib_ints)
+
+# calib_ints = np.unique(np.array(calib_ints.split(',')))
+# print(calib_ints)
+
+# allcalib_str = ','.join(calib_ints)
+
+# for row in log:
+# 	if row['calib'] == 'all':
+# 		row['calib'] = allcalib_str
+
+# write log
+
+ascii.write(log[logcol], format = 'fixed_width', output = rawdir + 'obslog_edited.txt', overwrite = True)
 
 ###############################################################################################
 # GENERATE PYPEIT FILE
