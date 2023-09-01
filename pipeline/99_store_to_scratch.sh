@@ -7,4 +7,4 @@
 #SBATCH -e slurm/backup.err  # File to which STDERR will be written, %j inserts jobid
 #SBATCH --account=conroy_lab
 
-rsync -vzr --progress /n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/ /n/holyscratch01/conroy_lab/vchandra/mage/
+cp -R /n/holystore01/LABS/conroy_lab/Lab/vchandra/mage /n/holyscratch01/conroy_lab/vchandra/

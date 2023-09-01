@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH -J r{DIR}
+#SBATCH -J rb2022_08_15
 #SBATCH -n 8 # Number of cores requested
 #SBATCH -N 1 # Ensure that all cores are on one machine
 #SBATCH -t 05:00:00 # Runtime
 #SBATCH --mem-per-cpu 4500 # Memory
 #SBATCH -p conroy_priority,shared,itc_cluster # Partition to submit to
 #SBATCH --constraint='intel'
-#SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce/reduce_{DIR}_v{VERSION}.out
-#SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce/reduce_{DIR}_v{VERSION}.err
+#SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce/reduce_b2022_08_15_v0.out
+#SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce/reduce_b2022_08_15_v0.err
 
 source activate pypeit
 
@@ -19,4 +19,4 @@ echo $SLURM_JOB_PARTITION
 echo 'NODE NAME:' 
 echo $SLURMD_NODENAME 
 
-python -u radagast.py --dir=/n/holyscratch01/conroy_lab/vchandra/mage/data/{DIR}/ --version={VERSION} {DRYRUN} {SKIPRED}
+python -u radagast.py --dir=/n/holyscratch01/conroy_lab/vchandra/mage/data/b2022_08_15/ --version=0  --skipred=False

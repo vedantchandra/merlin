@@ -24,7 +24,8 @@
 # make a library of your flux standards here
 # the code will find the relevant flux standard within the directory
 
-flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946', 'hip51633'] 
+flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946', 'hip51633',
+		  		 'hip18271'] # these are for Ana's program. none are A stars. 
 
 ###############################################################################################
 # IMPORTS
@@ -132,10 +133,13 @@ rawdir = workdir + 'raw/' # assume this exists with raw files in it
 reddir = workdir + 'reduced_v%s/' % version
 
 try:
-	os.mkdir(reddir)
-except:
+        print('making reduction directory: %s' % reddir)
+        os.mkdir(reddir)
+except Exception as e:
+        
 	print('reduction directory already exists...')
-	#raise
+	print(e)
+        #raise
 	
 	if restart:
 		print('deleting old reduction directory...')
@@ -162,6 +166,9 @@ log = ascii.read(rawdir + 'obslog.txt', format = 'fixed_width')
 logcol = list(log.columns)
 
 log['target'] = [target.lower() for target in log['target']]
+
+print('targets are: ')
+print(list(log['target']))
 
 # ANY SPECIAL-CASE FILES THAT NEED PROCESSING
 
