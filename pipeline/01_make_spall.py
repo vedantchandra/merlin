@@ -35,18 +35,18 @@ specfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/202*/reduc
 
 print('there are %i co-added spectra' % len(specfiles))
 
-for file in (specfiles):
-    name = file.split('/')[-1].split('_')[0].replace('.fits', '')
-    date = file.split('/')[-6]
+# for file in (specfiles):
+#     name = file.split('/')[-1].split('_')[0].replace('.fits', '')
+#     date = file.split('/')[-6]
 
-    if name == 'j2035m2245': # mis-named file in header
-        name = 'j2035m2445'
+#     if name == 'j2035m2245': # mis-named file in header
+#         name = 'j2035m2445'
     
-    outname = date + '_' + name + '.fits'
+#     outname = date + '_' + name + '.fits'
     
-    cmd = 'rsync -vzr %s %s%s' % (file, outdir, outname)
+#     cmd = 'rsync -vzr %s %s%s' % (file, outdir, outname)
     
-    os.system(cmd)
+#     os.system(cmd)
 
 ################################
 # COLLATE PLOTS
@@ -111,8 +111,10 @@ print('there are %i observations in spall, for %i unique targets...' % (len(spal
 
 tdb = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2022b.fits')
 tdb23a = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2023a.fits')
+tdb23b = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2023b.fits')
 
-tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a)), keys = 'name')
+
+tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a, tdb23b)), keys = 'name')
 
 for key in list(tdb.columns):
     if key == 'name':
