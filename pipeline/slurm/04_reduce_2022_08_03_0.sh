@@ -6,12 +6,10 @@
 #SBATCH --mem-per-cpu 4500 # Memory
 #SBATCH -p conroy_priority,shared,itc_cluster # Partition to submit to
 #SBATCH --constraint='intel'
-#SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce_2022_08_03_v0.out
-#SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce_2022_08_03_v0.err
+#SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce/reduce_2022_08_03_v0.out
+#SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce/reduce_2022_08_03_v0.err
 
-module load python
-source ~/.bashrc
-conda activate pypeit
+source activate pypeit
 
 cd /n/home03/vchandra/outerhalo/08_mage/pipeline/
 echo 'CPU USED: ' 

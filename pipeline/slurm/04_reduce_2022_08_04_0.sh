@@ -6,12 +6,10 @@
 #SBATCH --mem-per-cpu 4500 # Memory
 #SBATCH -p conroy_priority,shared,itc_cluster # Partition to submit to
 #SBATCH --constraint='intel'
-#SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce_2022_08_04_v0.out
-#SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce_2022_08_04_v0.err
+#SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce/reduce_2022_08_04_v0.out
+#SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce/reduce_2022_08_04_v0.err
 
-module load python
-source ~/.bashrc
-conda activate pypeit
+source activate pypeit
 
 cd /n/home03/vchandra/outerhalo/08_mage/pipeline/
 echo 'CPU USED: ' 
@@ -21,4 +19,4 @@ echo $SLURM_JOB_PARTITION
 echo 'NODE NAME:' 
 echo $SLURMD_NODENAME 
 
-python -u radagast.py --dir=/n/holyscratch01/conroy_lab/vchandra/mage/data/2022_08_04/ --version=0  --skipred=True --restart=False
+python -u radagast.py --dir=/n/holyscratch01/conroy_lab/vchandra/mage/data/2022_08_04/ --version=0  --skipred=False
