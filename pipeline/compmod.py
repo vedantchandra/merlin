@@ -238,9 +238,9 @@ def mksed(axSED,samples,photdata,bfdict):
     #         axMAG.scatter(w/1E+4,m,marker=s,c='k',zorder=1,s=10)
 
     # plot filter curves
-    for fc_i,clr in zip(fc,fitcol):
-        trans_i = 0.25*fc_i['trans']*(0.9*maxobsflx-1.1*minobsflx)+1.1*minobsflx
-        axSED.plot(fc_i['wave']/1E+4,trans_i,ls='-',lw=0.5,c=clr,alpha=1.0)
+    # for fc_i,clr in zip(fc,fitcol):
+    #     trans_i = 0.25*float(fc_i['trans'])*(0.9*float(maxobsflx)-1.1*float(minobsflx))+1.1*float(minobsflx)
+    #     axSED.plot(fc_i['wave']/1E+4,trans_i,ls='-',lw=0.5,c=clr,alpha=1.0)
 
     axSED.set_ylim(1.1*minobsflx,0.9*maxobsflx)
 

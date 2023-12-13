@@ -238,8 +238,8 @@ class mkrcat(object):
                 -0.42223415*np.sin(ra_deg.to(u.radian))*np.cos(dec_deg.to(u.radian))
                 +0.86182209*np.sin(dec_deg.to(u.radian))).to(u.degree))
 
-        outdict['Sgr_l'] = outdict['Sgr_l'].value
-        outdict['Sgr_b'] = outdict['Sgr_b'].value
+        # outdict['Sgr_l'] = outdict['Sgr_l'].value
+        # outdict['Sgr_b'] = outdict['Sgr_b'].value
 
         outdict['Sgr_FLAG'] = np.zeros(len(outdict['Sgr_l']),dtype=np.int16)
 
