@@ -31,7 +31,7 @@ try:
 except:
     print('dir exists')
 
-specfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/202*/reduced_%s/magellan_mage_A/Science/coadd/*.fits' % ver)
+specfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/*202*/reduced_%s/magellan_mage_A/Science/coadd/*.fits' % ver)
 
 print('there are %i co-added spectra' % len(specfiles))
 

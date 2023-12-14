@@ -8,7 +8,7 @@
 #SBATCH --constraint='intel'
 #SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/mage/V0.05/%a.out
 #SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/mage/V0.05/%a.err
-#SBATCH --array=0-448
+#SBATCH --array=449,450,451,452,453,454,455,458,459,460,461,462,463,464,465,466,467,468,469,470,472,473,474,477
 
 source activate outerhalo
 
@@ -20,4 +20,4 @@ echo $SLURM_JOB_PARTITION
 echo 'NODE NAME:' 
 echo $SLURMD_NODENAME 
 
-python 04_runms_star.py --catalog=mage --ind=$SLURM_ARRAY_TASK_ID --version=V0.05 --npoints=500 --skipfit=1
+python 04_runms_star.py --catalog=mage --ind=$SLURM_ARRAY_TASK_ID --version=V0.05 --npoints=500 --skipfit=0
