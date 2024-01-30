@@ -25,7 +25,8 @@
 # the code will find the relevant flux standard within the directory
 
 flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946', 'hip51633',
-		  		 'hip18271'] # these are for Ana's program. none are A stars. 
+		  		 'hip18271', # these are for Ana's program. none are A stars. 
+		  		 'ltt3864'] # for devsuite
 
 ###############################################################################################
 # IMPORTS
@@ -179,8 +180,8 @@ for row in log:
 log.remove_column('calib')
 
 sci = np.array(['j' in name for name in log['target']])
-std = np.array(['hip' in name.lower() for name in log['target']])
-arc = np.array(['thar' in name.lower() for name in log['target']])
+std = np.array(['hip' in name.lower() or 'ltt' in name.lower() for name in log['target']])
+arc = np.array(['thar' in name.lower() or 'arc' in name.lower() for name in log['target']])
 
 print(std)
 
@@ -197,7 +198,7 @@ for row in log:
 	
 	# find nearest arc for each science frame
 	
-	if 'j' in row['target'] or 'hip' in row['target']:
+	if 'j' in row['target'].lower() or 'hip' in row['target'].lower() or 'ltt' in row['target'].lower():
 		arc_dists = log['mjd'] - row['mjd'] #np.sqrt(((row['ra'] - log['ra']) * np.cos(np.radians(log['dec'])))**2 + (row['dec'] - log['dec'])**2)
 		arc_dists[arc_dists < 0] = 999
 		nearest_arc = np.argmin(arc_dists[arc])
@@ -213,15 +214,15 @@ for row in log:
 	## reset file types
 	
 	if 'flat' in row['target'].lower():
-		row['frametype'] = 'illumflat,pixelflat'
+		row['frametype'] = 'trace,illumflat,pixelflat'
 	elif 'flash' in row['target'].lower():
-		row['frametype'] = 'trace'
+		row['frametype'] = 'trace,illumflat,pixelflat'
+	elif 'thar' in row['target'].lower() or 'arc' in row['target'].lower():
+		row['frametype'] = 'arc,tilt'
 	elif 'j' in row['target'].lower():
 		row['frametype'] = 'science'
-	elif 'hip' in row['target'].lower():
+	elif 'hip' in row['target'].lower() or 'ltt' in row['target'].lower():
 		row['frametype'] = 'science'
-	elif 'thar' in row['target'].lower():
-		row['frametype'] = 'arc,tilt'
 		
 	row['comb_id'] = -1
 
@@ -234,7 +235,12 @@ print(uniq_targets)
 coadd_ctr = 1
 for ctr,targ in enumerate(uniq_targets):
 
-	if 'j' in targ or 'hip' in targ:
+	targsel = log['target'] == targ
+	if np.sum(targsel) == 1:
+		print('only 1 exposure for %s, not combining' % targ)
+		continue
+
+	if 'j' in targ or 'hip' in targ or 'ltt' in targ:
 		sel = log['target'] == targ
 
 		log['comb_id'][sel] = coadd_ctr
@@ -247,7 +253,7 @@ for ctr,targ in enumerate(uniq_targets):
 
 log['arcfile_str'] = [file.strip() for file in log['arcfile']]
 for row in log:
-	if 'thar' in row['target'].lower():
+	if 'thar' in row['target'].lower() or 'arc' in row['target'].lower():
 		scisel = log['arcfile_str'] == row['filename'].strip()
 		
 		if np.sum(scisel) == 0:
@@ -324,7 +330,7 @@ newlines = [];
 
 for line in lines:
 	
-	newlines.append(line)
+	newlines.append(line) # remove hashtags
 	
 	if 'spectrograph' in line:
 					
@@ -370,7 +376,7 @@ with open(rawdir + 'obslog_edited.txt') as f:
 
 with open(pypfile, 'a') as f:
 	for line in obslog:
-		f.write(line)
+		f.write(line.replace(' # ',  '   '))
 		
 	f.write('data end')
 
@@ -398,8 +404,14 @@ if skipred:
 	print(bcolors.HEADER + 'skipping main reduction...' + bcolors.ENDC)
 else:
 	print(bcolors.HEADER + 'running main reduction! buckle up and grab some coffee...' + bcolors.ENDC)
-	os.system('run_pypeit %s -o' % pypfile)
-	print(bcolors.HEADER + 'main reduction completed!' + bcolors.ENDC)
+	status = os.system('run_pypeit %s -o' % pypfile)
+
+	if status == 0:
+
+		print(bcolors.HEADER + 'main reduction completed!' + bcolors.ENDC)
+	else:
+		print(bcolors.HEADER + 'main reduction has ERROR, killing!' + bcolors.ENDC)
+		raise
 
 gc.collect()
 
@@ -593,13 +605,14 @@ for target in targets:
 
 	coadd_list.append('[coadd1d]')
 	coadd_list.append('  coaddfile=coadd/%s_coadd.fits' % target)
-	coadd_list.append('  sensfuncfile = \'sensfunc.fits\'')
 	coadd_list.append('  wave_method = velocity')
+	# coadd_list.append('[sensfunc]')
+	# coadd_list.append('  sensfuncfile = \'sensfunc.fits\'')
 	#coadd_list.append('  spec_samp_fact = 1')
 
 
 	coadd_list.append('  coadd1d read')
-	coadd_list.append('    filename | obj_id')
+	coadd_list.append('    filename | obj_id | sensfile')
 
 	for scifile in targetfiles:
 
@@ -608,7 +621,7 @@ for target in targets:
 		tab = ascii.read(txtfile, names = ['adsf', 'order', 'name', 'spat', 'frac', 'box', 'fwhm', 's2n', 'wv', 'blah'])
 
 		for obj in tab[1:]:
-			line = '    ' + scifile + ' | ' + obj['name'].strip()   
+			line = '    ' + scifile + ' | ' + obj['name'].strip() + '|' + 'sensfunc.fits'
 			coadd_list.append(line)
 			break
 
