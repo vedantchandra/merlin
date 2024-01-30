@@ -33,8 +33,13 @@ if __name__ == '__main__':
     if args.dir == 'all':
         folders = glob.glob(datadir + 'data/202*')
         dirs = [os.path.basename(x) for x in folders]
+    elif args.dir == 'bonaca':
+        folders = glob.glob(datadir + 'data/b202*')
+        dirs = [os.path.basename(x) for x in folders]
     else:
         dirs = [args.dir]
+
+    print('reducing %i nights of data!' % len(dirs))
 
     for directory in dirs:
 

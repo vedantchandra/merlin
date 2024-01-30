@@ -31,12 +31,15 @@ try:
 except:
     print('dir exists')
 
-specfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/202*/reduced_%s/magellan_mage_A/Science/coadd/*.fits' % ver)
+specfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/*202*/reduced_%s/magellan_mage_A/Science/coadd/*.fits' % ver)
 
 print('there are %i co-added spectra' % len(specfiles))
 
 for file in (specfiles):
     name = file.split('/')[-1].split('_')[0].replace('.fits', '')
+
+    print('name is %s' % name)
+
     date = file.split('/')[-6]
 
     if name == 'j2035m2245': # mis-named file in header
@@ -52,20 +55,20 @@ for file in (specfiles):
 # COLLATE PLOTS
 ################################
 
-# plotfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/202*/reduced_%s/magellan_mage_A/plots/*.png' % ver)
+plotfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/*202*/reduced_%s/magellan_mage_A/plots/*.png' % ver)
 
-# for file in (plotfiles):
-#     name = file.split('/')[-1].replace('.png', '')
-#     date = file.split('/')[-5]
+for file in (plotfiles):
+    name = file.split('/')[-1].replace('.png', '')
+    date = file.split('/')[-5]
 
-#     if name == 'j2035m2245': # mis-named file in header
-#         name = 'j2035m2445'
+    if name == 'j2035m2245': # mis-named file in header
+        name = 'j2035m2445'
     
-#     outname = date + '_' + name + '.fits'
+    outname = date + '_' + name + '.png'
     
-#     cmd = 'rsync -vzr %s %s%s' % (file, plotdir2, outname)
+    cmd = 'rsync -vzr %s %s%s' % (file, plotdir2, outname)
     
-#     os.system(cmd)
+    os.system(cmd)
 
 ################################
 # MAKE SPALL
@@ -111,8 +114,11 @@ print('there are %i observations in spall, for %i unique targets...' % (len(spal
 
 tdb = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2022b.fits')
 tdb23a = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2023a.fits')
+tdb23b = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2023b.fits')
+tdb_bonaca = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_bonaca.fits')
 
-tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a)), keys = 'name')
+
+tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a, tdb23b, tdb_bonaca)), keys = 'name')
 
 for key in list(tdb.columns):
     if key == 'name':

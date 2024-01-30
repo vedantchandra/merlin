@@ -9,9 +9,7 @@
 #SBATCH -o /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce/reduce_2023_03_28_v0.out
 #SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/reduce/reduce_2023_03_28_v0.err
 
-module load python
-source ~/.bashrc
-conda activate pypeit
+source activate pypeit
 
 cd /n/home03/vchandra/outerhalo/08_mage/pipeline/
 echo 'CPU USED: ' 

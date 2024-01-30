@@ -10,7 +10,7 @@
 #SBATCH -e /n/holyscratch01/conroy_lab/vchandra/mage/logs/{CATALOG}/{VERSION}/%a.err
 #SBATCH --array={ARR1}-{ARR2}
 
-source /n/home03/vchandra/warmup.sh
+source activate outerhalo
 
 cd /n/home03/vchandra/outerhalo/08_mage/pipeline/
 echo 'CPU USED: ' 
