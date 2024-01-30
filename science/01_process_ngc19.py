@@ -13,42 +13,68 @@ import os
 import glob
 import pandas as pd
 from scipy import stats
+import random
 
 plt.style.use('~/vedant.mplstyle')
 
 
 # %%
 
-datadir = '/n/holystore01/LABS/conroy_lab/Lab/h3/mocks/lmc/'
-files = np.sort(glob.glob(datadir + 'MWLMC5*icrs_nocuts.fits'))
+datadir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/ngc19/tracers/'
+files = np.sort(glob.glob(datadir + '*.txt'))
 print(files)
 
-outdir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/ngc19/'
+outdir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/ngc19/tracers/processed/'
 
 # %%
-file = files[1]
-# %%
-tab = Table.read(file)
+for file in files:
+    print('reading %s' % file)
+
+    p = 0.01  # 1% of the lines
+
+    df = pd.read_csv(
+            file,
+            names = ['x', 'y', 'z', 'vx', 'vy', 'vz', 'm'],
+            skiprows=lambda i: i>0 and random.random() > p,
+            delimiter=' ',
+    )
+
+    print('%i rows' % len(df))
+
+    coo = SkyCoord(x = df['x'] * u.kpc, y = df['y'] * u.kpc, z = df['z'] * u.kpc,
+                v_x = df['vx'] * u.km / u.s, v_y = df['vy'] * u.km / u.s, v_z = df['vz'] * u.km / u.s,
+                frame = 'galactocentric')
 
 
-# %%
+    cooeq = coo.icrs
+    coogal = coo.galactic
 
-sel = (
+    df['ra'] = cooeq.ra.value
+    df['dec'] = cooeq.dec.value
+    df['pmra'] = cooeq.pm_ra_cosdec.value
+    df['pmdec'] = cooeq.pm_dec.value
+    df['distance'] = cooeq.distance.value
+    df['rv'] = cooeq.radial_velocity.value
 
-    (tab['distance'] > 20)
+    df['l'] = coogal.l.value
+    df['b'] = coogal.b.value
 
-)
-# %%
-np.sum(sel) / len(sel)
-# %%
+    # # %%
+    # plt.scatter(df['ra'], df['dec'])
+    # # %%
 
-selcol = ['X_gal', 'Y_gal', 'Z_gal', 
-          'Vx_gal', 'Vy_gal', 'Vz_gal',
-            'l', 'b', 'distance',
-            'V_gsr']
+    # plt.hist(df['distance'])
 
-# %%
+    # # %%
+    # rgal = np.sqrt(df['x']**2 + df['y']**2 + df['z']**2)
+    # # %%
+    # plt.hist(rgal)
+    # #%%%
 
-Table(np.array(tab[selcol])).write(outdir + file.split('/')[-1].split('.')[0] + '_trimmed.h5')
+    name = file.split('/')[-1].replace('.txt', '')
+    outname = outdir + name + '_observed.h5'
 
+    print('writing %s' % outname)
+
+    df.to_hdf(outname, key = 'table', mode = 'w', format = 'fixed')
 # %%
