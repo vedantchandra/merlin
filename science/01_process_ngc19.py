@@ -30,7 +30,7 @@ outdir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/ngc19/tracers/processed/'
 for file in files:
     print('reading %s' % file)
 
-    p = 0.01  # 1% of the lines
+    p = 0.1  # 1% of the lines
 
     df = pd.read_csv(
             file,
@@ -41,8 +41,8 @@ for file in files:
 
     print('%i rows' % len(df))
 
-    coo = SkyCoord(x = df['x'] * u.kpc, y = df['y'] * u.kpc, z = df['z'] * u.kpc,
-                v_x = df['vx'] * u.km / u.s, v_y = df['vy'] * u.km / u.s, v_z = df['vz'] * u.km / u.s,
+    coo = SkyCoord(x = np.array(df['x']) * u.kpc, y = np.array(df['y']) * u.kpc, z = np.array(df['z']) * u.kpc,
+                v_x = np.array(df['vx']) * u.km / u.s, v_y = np.array(df['vy']) * u.km / u.s, v_z = np.array(df['vz']) * u.km / u.s,
                 frame = 'galactocentric')
 
 
