@@ -376,6 +376,7 @@ for line in lines:
 		newlines.append('    snr_thresh=3\n')
 		newlines.append('  [[skysub]]\n')
 		newlines.append('    global_sky_std=False\n')
+		newlines.append('    max_mask_frac=1.0=False\n')
 
 		# newlines.append('data read\n')
 		# newlines.append(' path %s\n' % rawdir)
@@ -631,25 +632,26 @@ for target in targets:
 
 	coadd_list.append('[coadd1d]')
 	coadd_list.append('  coaddfile=coadd/%s_coadd.fits' % target)
-	coadd_list.append('  wave_method = velocity')
-	coadd_list.append('sensfuncfile = \'sensfunc.fits\'')
+	coadd_list.append('  wave_method = log10')
+	# coadd_list.append('  sensfuncfile = \'sensfunc.fits\'')
 	# coadd_list.append('[sensfunc]')
 	#coadd_list.append('  spec_samp_fact = 1')
 
 
 	coadd_list.append('  coadd1d read')
-	coadd_list.append('    filename | obj_id')
+	coadd_list.append('  path %s' % scidir)
+	coadd_list.append('    filename | obj_id | sensfile')
 
 	for scifile in targetfiles:
 
 		txtfile = scifile[:-5] + '.txt'
 
-		tab = ascii.read(txtfile)
+		tab = ascii.read(txtfile, format = 'fixed_width')
 
 		print(tab)
 
 		for obj in tab[1:]:
-			line = '    ' + scifile + ' | ' + obj['name'].strip() + '|' #+ 'sensfunc.fits'
+			line = '    ' + scifile.split('/')[-1] + ' | ' + obj['name'].strip() + '|' + 'sensfunc.fits'
 			coadd_list.append(line)
 			break
 
