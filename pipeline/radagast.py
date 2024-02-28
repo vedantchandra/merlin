@@ -455,53 +455,53 @@ except:
 	os.mkdir(outdir + 'plots/')
 
 
-print('making order preview plots...')
+# print('making order preview plots...')
 
-for outfile in outfiles:
+# for outfile in outfiles:
 
-	name = outfile.split('_')[-3].split('-')[1]
+# 	name = outfile.split('_')[-3].split('-')[1]
 
-	f,axs = plt.subplots(4, 3, figsize = (35, 10), sharey = False)
+# 	f,axs = plt.subplots(4, 3, figsize = (35, 10), sharey = False)
 
-	with fits.open(outfile) as f:
+# 	with fits.open(outfile) as f:
 
-		nspec = f[0].header['NSPEC']
+# 		nspec = f[0].header['NSPEC']
 
-		if nspec < 12:
-			print('there are only %i/12 orders for %s!!!' % (nspec, name))
+# 		if nspec < 12:
+# 			print('there are only %i/12 orders for %s!!!' % (nspec, name))
 
-		order_list = np.arange(nspec)
+# 		order_list = np.arange(nspec)
 
-		for order in order_list:
+# 		for order in order_list:
 
-			plt.sca(axs.ravel()[order])
+# 			plt.sca(axs.ravel()[order])
 
-			try:
-				wl, fl, ivar = f[order+1].data['OPT_WAVE'], f[order+1].data['OPT_COUNTS'], f[order+1].data['OPT_COUNTS_IVAR']
-			except Exception as e:
-				print('order preview failed for %s order %i' % (name, order))
-				print(e)
-				continue
-			sig = 1 / np.sqrt(ivar)
-			snr = np.nanmedian(fl * np.sqrt(ivar))
+# 			try:
+# 				wl, fl, ivar = f[order+1].data['OPT_WAVE'], f[order+1].data['OPT_COUNTS'], f[order+1].data['OPT_COUNTS_IVAR']
+# 			except Exception as e:
+# 				print('order preview failed for %s order %i' % (name, order))
+# 				print(e)
+# 				continue
+# 			sig = 1 / np.sqrt(ivar)
+# 			snr = np.nanmedian(fl * np.sqrt(ivar))
 
-			#cont = scipy.signal.medfilt(fl, 251)
-			plt.plot(wl, fl, color = 'k')
+# 			#cont = scipy.signal.medfilt(fl, 251)
+# 			plt.plot(wl, fl, color = 'k')
 
-			cl = np.isfinite(fl)
+# 			cl = np.isfinite(fl)
 
-			y1 = np.nanquantile(fl, 0.01)
-			y2 = np.nanquantile(fl, 0.95)
-			plt.ylim(0.01 * y1, 1.5 * y2)
+# 			y1 = np.nanquantile(fl, 0.01)
+# 			y2 = np.nanquantile(fl, 0.95)
+# 			plt.ylim(0.01 * y1, 1.5 * y2)
 
-			plt.text(0.95, 0.9, 'S/N = %.1f' % snr, ha = 'right', va = 'top', bbox = dict(color = 'w', boxstyle = 'round'), transform = plt.gca().transAxes)
+# 			plt.text(0.95, 0.9, 'S/N = %.1f' % snr, ha = 'right', va = 'top', bbox = dict(color = 'w', boxstyle = 'round'), transform = plt.gca().transAxes)
 			
-	plt.suptitle(name, y = 0.95)
+# 	plt.suptitle(name, y = 0.95)
 
-	plt.tight_layout()
+# 	plt.tight_layout()
 
-	plt.savefig(outdir + 'plots/preview_%s.png' % name, dpi = 200)
-	plt.close()
+# 	plt.savefig(outdir + 'plots/preview_%s.png' % name, dpi = 200)
+# 	plt.close()
 
 
 ###############################################################################################
@@ -623,7 +623,7 @@ except:
 
 for target in targets:
 	
-	print('stiching %s...' % target)
+	print('stitching %s...' % target)
 
 	targetfiles = glob.glob(scidir + 'spec1d*%s*.fits' % target)
 
@@ -632,30 +632,30 @@ for target in targets:
 	coadd_list.append('[coadd1d]')
 	coadd_list.append('  coaddfile=coadd/%s_coadd.fits' % target)
 	coadd_list.append('  wave_method = velocity')
+	coadd_list.append('sensfuncfile = \'sensfunc.fits\'')
 	# coadd_list.append('[sensfunc]')
-	# coadd_list.append('  sensfuncfile = \'sensfunc.fits\'')
 	#coadd_list.append('  spec_samp_fact = 1')
 
 
 	coadd_list.append('  coadd1d read')
-	coadd_list.append('    filename | obj_id | sensfile')
+	coadd_list.append('    filename | obj_id')
 
 	for scifile in targetfiles:
 
 		txtfile = scifile[:-5] + '.txt'
 
-		tab = ascii.read(txtfile, names = ['adsf', 'order', 'name', 'spat', 'frac', 'box', 'fwhm', 's2n', 'wv', 'blah'])
+		tab = ascii.read(txtfile)
+
+		print(tab)
 
 		for obj in tab[1:]:
-			line = '    ' + scifile + ' | ' + obj['name'].strip() + '|' + 'sensfunc.fits'
+			line = '    ' + scifile + ' | ' + obj['name'].strip() + '|' #+ 'sensfunc.fits'
 			coadd_list.append(line)
 			break
 
 		#print(line)
 
 	coadd_list.append('  coadd1d end')
-
-	coadd_list
 
 	with open(scidir + 'make_coadd_%s.txt' % target, 'w') as f:
 		for line in coadd_list:
