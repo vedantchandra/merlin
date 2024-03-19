@@ -24,7 +24,7 @@
 # make a library of your flux standards here
 # the code will find the relevant flux standard within the directory
 
-flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946', 'hip51633', 
+flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946', 'hip51633',
 				  'hip41926', # NOT AN A STAR, this is for Dec 3 2023 when no A star was observed
 		  		 'hip18271', # NOT AN A STAR
 				 'hip100773', 'hip5675', 'hip6257'] # these are for Ana's program, A stars
@@ -162,9 +162,25 @@ print('now working in this directory: %s' % os.getcwd())
 ###############################################################################################
 
 print('pairing arcs to science exposures...')
-os.system('pypeit_obslog -r %s -d %s -o -f obslog.txt magellan_mage' % (rawdir, rawdir))
+os.system('pypeit_obslog -r %s --bad_types=keep -d %s -o -f obslog.txt magellan_mage' % (rawdir, rawdir))
 
-log = ascii.read(rawdir + 'obslog.txt', format = 'fixed_width')
+### FIX IGNORED FRAMES DUE TO BAD TYPING
+
+with open(rawdir + 'obslog.txt', 'r') as f:
+	lines = f.readlines()
+
+with open(rawdir + 'obslog_fixed.txt', 'w') as f:
+	for line in lines:
+		if '#' in line and 'mage0' in line:
+			#print(line)
+			line = line.replace('#', ' ')
+			#print(line)
+
+
+		f.write(line + '\n')
+
+
+log = ascii.read(rawdir + 'obslog_fixed.txt', format = 'fixed_width') # IGNORE COMMENTED OUT ROWS
 logcol = list(log.columns)
 
 log['target'] = [target.lower() for target in log['target']]
@@ -198,7 +214,7 @@ for row in log:
 	
 	
 	# find nearest arc for each science frame
-	
+
 	if 'j' in row['target'].lower() or 'hip' in row['target'].lower() or 'ltt' in row['target'].lower():
 		arc_dists = log['mjd'] - row['mjd'] #np.sqrt(((row['ra'] - log['ra']) * np.cos(np.radians(log['dec'])))**2 + (row['dec'] - log['dec'])**2)
 		arc_dists[arc_dists < 0] = 999
@@ -328,6 +344,7 @@ with open(pypfile) as f:
 	lines = f.readlines()
 
 newlines = [];
+# newlines.append('setup read\n')
 
 for line in lines:
 	
@@ -348,8 +365,8 @@ for line in lines:
 
 
 		newlines.append('[calibrations]\n')
-		newlines.append('  [[wavelengths]]\n')
-		newlines.append('    rms_threshold=0.4\n')
+		# newlines.append('  [[wavelengths]]\n')
+		# newlines.append('    rms_threshold=0.4\n')
 		newlines.append('  [[slitedges]]\n')
 		newlines.append('    edge_thresh=1\n')
 
@@ -359,9 +376,18 @@ for line in lines:
 		newlines.append('    snr_thresh=3\n')
 		newlines.append('  [[skysub]]\n')
 		newlines.append('    global_sky_std=False\n')
+		newlines.append('    max_mask_frac=1.0\n')
+
+		# newlines.append('data read\n')
+		# newlines.append(' path %s\n' % rawdir)
 		
 	if 'path' in line:
 		break
+
+
+
+print(newlines)
+
 
 os.remove(pypfile)
 
@@ -377,7 +403,7 @@ with open(rawdir + 'obslog_edited.txt') as f:
 
 with open(pypfile, 'a') as f:
 	for line in obslog:
-		f.write(line.replace(' # ',  '   '))
+		f.write(line)
 		
 	f.write('data end')
 
@@ -598,7 +624,7 @@ except:
 
 for target in targets:
 	
-	print('stiching %s...' % target)
+	print('stitching %s...' % target)
 
 	targetfiles = glob.glob(scidir + 'spec1d*%s*.fits' % target)
 
@@ -607,30 +633,31 @@ for target in targets:
 	coadd_list.append('[coadd1d]')
 	coadd_list.append('  coaddfile=coadd/%s_coadd.fits' % target)
 	coadd_list.append('  wave_method = velocity')
-	# coadd_list.append('[sensfunc]')
 	# coadd_list.append('  sensfuncfile = \'sensfunc.fits\'')
+	# coadd_list.append('[sensfunc]')
 	#coadd_list.append('  spec_samp_fact = 1')
 
 
 	coadd_list.append('  coadd1d read')
+	coadd_list.append('  path %s' % scidir)
 	coadd_list.append('    filename | obj_id | sensfile')
 
 	for scifile in targetfiles:
 
 		txtfile = scifile[:-5] + '.txt'
 
-		tab = ascii.read(txtfile, names = ['adsf', 'order', 'name', 'spat', 'frac', 'box', 'fwhm', 's2n', 'wv', 'blah'])
+		tab = ascii.read(txtfile, format = 'fixed_width')
+
+		print(tab)
 
 		for obj in tab[1:]:
-			line = '    ' + scifile + ' | ' + obj['name'].strip() + '|' + 'sensfunc.fits'
+			line = '    ' + scifile.split('/')[-1] + ' | ' + obj['name'].strip() + '|' + 'sensfunc.fits'
 			coadd_list.append(line)
 			break
 
 		#print(line)
 
 	coadd_list.append('  coadd1d end')
-
-	coadd_list
 
 	with open(scidir + 'make_coadd_%s.txt' % target, 'w') as f:
 		for line in coadd_list:
