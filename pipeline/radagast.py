@@ -49,6 +49,8 @@ import scipy
 import argparse
 import time
 import gc
+from astropy.table import Table
+import astropy
 start = time.time()
 
 #plt.style.use('vedant')
@@ -200,7 +202,33 @@ sci = np.array(['j' in name for name in log['target']])
 std = np.array(['hip' in name.lower() or 'ltt' in name.lower() for name in log['target']])
 arc = np.array(['thar' in name.lower() or 'arc' in name.lower() for name in log['target']])
 
-print(std)
+#### THROW OUT DUPLICATED STANDARDS TO PREVENT ERROR
+print('deleting duplicated standards!')
+uniq_stds = np.unique(log['target'][std])
+print('unique standards are:')
+print(uniq_stds)
+
+nrow_std = {};
+
+newlog = [];
+for uniq_std in uniq_stds:
+	for row in log:
+		if 'hip' not in row['target'].lower():
+			newlog.append(dict(row))
+		else:
+			seltab = log[log['target'] == uniq_std]
+			newlog.append(dict(seltab[-1])) # take last standard
+
+newlog = Table(newlog)
+print(newlog)
+log = astropy.table.unique(newlog)
+print(log)
+
+sci = np.array(['j' in name for name in log['target']])
+std = np.array(['hip' in name.lower() or 'ltt' in name.lower() for name in log['target']])
+arc = np.array(['thar' in name.lower() or 'arc' in name.lower() for name in log['target']])
+
+###################
 
 n_cal = np.sum(sci) + np.sum(std)
 dummy_cal = 0
@@ -384,8 +412,6 @@ for line in lines:
 	if 'path' in line:
 		break
 
-
-
 print(newlines)
 
 
@@ -393,13 +419,20 @@ os.remove(pypfile)
 
 # Write new pypeit file
 
+# write preamble
+
 with open(pypfile, 'w') as f:
 	for line in newlines:
 		f.write("%s" % line)
 
 
+# write data block
+	
 with open(rawdir + 'obslog_edited.txt') as f:
-	obslog = f.readlines()[3:]
+	obslog = f.readlines()
+
+	print('first row of OBSLOG is:')
+	print(obslog[0])
 
 with open(pypfile, 'a') as f:
 	for line in obslog:
