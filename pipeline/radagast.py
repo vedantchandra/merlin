@@ -190,6 +190,7 @@ log['target'] = [target.lower() for target in log['target']]
 print('targets are: ')
 print(list(log['target']))
 
+###################
 # ANY SPECIAL-CASE FILES THAT NEED PROCESSING
 
 for row in log:
@@ -203,6 +204,7 @@ std = np.array(['hip' in name.lower() or 'ltt' in name.lower() for name in log['
 arc = np.array(['thar' in name.lower() or 'arc' in name.lower() for name in log['target']])
 
 #### THROW OUT DUPLICATED STANDARDS TO PREVENT ERROR
+
 print('deleting duplicated standards!')
 uniq_stds = np.unique(log['target'][std])
 print('unique standards are:')
@@ -228,6 +230,8 @@ sci = np.array(['j' in name for name in log['target']])
 std = np.array(['hip' in name.lower() or 'ltt' in name.lower() for name in log['target']])
 arc = np.array(['thar' in name.lower() or 'arc' in name.lower() for name in log['target']])
 
+###################
+###################
 ###################
 
 n_cal = np.sum(sci) + np.sum(std)
@@ -277,21 +281,39 @@ uniq_targets = list(np.unique(log['target']))
 print('unique targets are:')
 print(uniq_targets)
 
-coadd_ctr = 1
-for ctr,targ in enumerate(uniq_targets):
+coadd_ctr = 0
+done_targets = [];
+for row in log:
 
-	targsel = log['target'] == targ
-	if np.sum(targsel) == 1:
-		print('only 1 exposure for %s, not combining' % targ)
-		continue
+	target = row['target']
 
-	if 'j' in targ or 'hip' in targ or 'ltt' in targ:
-		sel = log['target'] == targ
+	if 'j' in target.lower() or 'hip' in target.lower() or 'ltt' in target.lower():
 
+		if target in done_targets:
+			continue
+
+		sel = log['target'] == target
 		log['comb_id'][sel] = coadd_ctr
-		log['calib'][sel] = log['calib'][sel][0]
 
 		coadd_ctr += 1
+		done_targets.append(target)
+	
+
+# for ctr,targ in enumerate(uniq_targets):
+
+# 	targsel = log['target'] == targ
+
+# 	if np.sum(targsel) == 1:
+# 		print('only 1 exposure for %s, not combining' % targ)
+# 		continue
+
+# 	if 'j' in targ or 'hip' in targ or 'ltt' in targ:
+# 		sel = log['target'] == targ
+
+# 		log['comb_id'][sel] = coadd_ctr
+# 		log['calib'][sel] = log['calib'][sel][0]
+
+# 		coadd_ctr += 1
 
 # Set calib strings
 
