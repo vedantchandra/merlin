@@ -3,4 +3,4 @@
 </p>
 
 # merlin
-end-to-end reduction and analysis pipeline for magE spectra
+end-to-end reduction and analysis pipeline for magE spectra, using PypeIt v1.15.0.
