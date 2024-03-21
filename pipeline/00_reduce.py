@@ -53,7 +53,7 @@ if __name__ == '__main__':
             row = row.replace('{SKIPRED}', skipred_str)
             outscript.append(row)
 
-        outpath = pipedir + 'slurm/04_reduce_%s_%s.sh' % (directory, args.version)
+        outpath = pipedir + 'slurm/00_reduce_%s_%s.sh' % (directory, args.version)
 
         with open(outpath, 'w') as f:
             for line in outscript:
