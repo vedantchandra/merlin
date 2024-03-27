@@ -51,6 +51,7 @@ import time
 import gc
 from astropy.table import Table
 import astropy
+import numpy.lib.recfunctions as rfn
 start = time.time()
 
 #plt.style.use('vedant')
@@ -591,6 +592,56 @@ tellfiles = glob.glob(scidir + 'spec1d*%s*.fits' % telluric)
 print('there are %i telluric files, picking the first one...' % len(tellfiles))
 tellfile = tellfiles[0] # assume you only use 1 telluric exposure
 print('using %s as the telluric' % tellfile)
+
+
+###############################################################################################
+# FUDGE-FIX MISSING STD ORDERS
+###############################################################################################
+
+print('fudge-fixing any missing orders in this STD star')
+
+with fits.open(tellfile, 'update') as f:
+    for idx in range(len(f) - 1):
+        idx += 1
+        hdu = f[idx]
+
+        print(hdu.header['EXTNAME'])
+
+        if 'ORDER' not in hdu.header['EXTNAME']:
+            print('not order')
+            break
+        
+        names = list(hdu.data.names)
+
+        if 'ORDER0006' in hdu.header["EXTNAME"]:
+
+            print('WORKING ON ORDER %s' % hdu.header['EXTNAME'])
+
+            boxnames = [(name.replace('BOX', '')) for name in names if 'BOX' in name]
+
+            data = hdu.data.copy()
+
+            data['BOX_MASK'] = np.repeat(True, len(data['BOX_MASK']))
+
+            for bn in boxnames:
+                
+                if 'OPT' + bn in list(data.dtype.names):
+                    print('opt in name')
+                    data['OPT' + bn] = data['BOX' + bn]
+                else:
+                    print('opt not in name! rewriting box ->  opt')
+                    new = np.array(data['BOX' + bn], dtype=[('OPT' + bn, data['BOX' + bn].dtype)])
+                    data = rfn.merge_arrays(data, new, asrecarray = True, flatten = True)
+                    data = rfn.append_fields(data, new.dtype.names[0], data['BOX' + bn])
+
+            f[idx].data = data
+
+
+
+###############################################################################################
+# make sensfunc
+###############################################################################################
+
 
 print('making sensitivity function...')
 
