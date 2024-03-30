@@ -636,7 +636,7 @@ with fits.open(tellfile, 'update') as f:
 
             f[idx].data = data
 
-
+print('done with fudge-fixing standard...')
 
 ###############################################################################################
 # make sensfunc
