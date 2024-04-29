@@ -30,7 +30,7 @@ outdir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/ngc19/tracers/processed/'
 for file in files:
     print('reading %s' % file)
 
-    p = 0.1  # 1% of the lines
+    p = 0.5  # X% of the lines
 
     df = pd.read_csv(
             file,

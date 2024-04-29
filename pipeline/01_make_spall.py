@@ -5,8 +5,19 @@ from tqdm import tqdm
 from astropy.table import Table
 from astropy.io import fits
 import astropy
+import argparse
 
 ver = 'v0'
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--transfer', action='store_true')
+parser.add_argument('--no-transfer', dest='transfer', action='store_false')
+parser.set_defaults(transfer=True)
+args = parser.parse_args()
+
+dotransfer = args.transfer
+print(dotransfer)
+
 
 outdir = '/n/holyscratch01/conroy_lab/vchandra/mage/data/reduced/%s/' % ver
 plotdir1 = '/n/holyscratch01/conroy_lab/vchandra/mage/plots/%s/'% ver
@@ -16,59 +27,64 @@ plotdir2 = '/n/holyscratch01/conroy_lab/vchandra/mage/plots/%s/reduction/' % ver
 # COLLATE SPECTRA
 ################################
 
-try:
-    os.mkdir(outdir)
-except:
-    print('dir exists')
+if dotransfer:
+    try:
+        os.mkdir(outdir)
+    except:
+        print('dir exists')
 
-try:
-    os.mkdir(plotdir1)
-except:
-    print('dir exists')
+    try:
+        os.mkdir(plotdir1)
+    except:
+        print('dir exists')
 
-try:
-    os.mkdir(plotdir2)
-except:
-    print('dir exists')
+    try:
+        os.mkdir(plotdir2)
+    except:
+        print('dir exists')
 
-specfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/*202*/reduced_%s/magellan_mage_A/Science/coadd/*.fits' % ver)
+    specfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/*202*/reduced_%s/magellan_mage_A/Science/coadd/*.fits' % ver)
 
-print('there are %i co-added spectra' % len(specfiles))
+    print('there are %i co-added spectra' % len(specfiles))
 
-for file in (specfiles):
-    name = file.split('/')[-1].split('_')[0].replace('.fits', '')
+    for file in (specfiles):
+        name = file.split('/')[-1].split('_')[0].replace('.fits', '')
 
-    print('name is %s' % name)
+        print('name is %s' % name)
 
-    date = file.split('/')[-6]
+        date = file.split('/')[-6]
 
-    if name == 'j2035m2245': # mis-named file in header
-        name = 'j2035m2445'
-    
-    outname = date + '_' + name + '.fits'
-    
-    cmd = 'rsync -vzr %s %s%s' % (file, outdir, outname)
-    
-    os.system(cmd)
+        if name == 'j2035m2245': # mis-named file in header
+            name = 'j2035m2445'
+        
+        outname = date + '_' + name + '.fits'
+        
+        cmd = 'rsync -vzr %s %s%s' % (file, outdir, outname)
+        
+        os.system(cmd)
+else:
+    print('skipping coadd file transfer...')
 
 ################################
 # COLLATE PLOTS
 ################################
 
 plotfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/*202*/reduced_%s/magellan_mage_A/plots/*.png' % ver)
+if dotransfer:
+    for file in (plotfiles):
+        name = file.split('/')[-1].replace('.png', '')
+        date = file.split('/')[-5]
 
-for file in (plotfiles):
-    name = file.split('/')[-1].replace('.png', '')
-    date = file.split('/')[-5]
-
-    if name == 'j2035m2245': # mis-named file in header
-        name = 'j2035m2445'
-    
-    outname = date + '_' + name + '.png'
-    
-    cmd = 'rsync -vzr %s %s%s' % (file, plotdir2, outname)
-    
-    os.system(cmd)
+        if name == 'j2035m2245': # mis-named file in header
+            name = 'j2035m2445'
+        
+        outname = date + '_' + name + '.png'
+        
+        cmd = 'rsync -vzr %s %s%s' % (file, plotdir2, outname)
+        
+        os.system(cmd)
+else:
+    print('skipping plot transfer...')
 
 ################################
 # MAKE SPALL
@@ -115,10 +131,11 @@ print('there are %i observations in spall, for %i unique targets...' % (len(spal
 tdb = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2022b.fits')
 tdb23a = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2023a.fits')
 tdb23b = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2023b.fits')
+tdb24a = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2024a.fits')
 tdb_bonaca = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_bonaca.fits')
 
 
-tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a, tdb23b, tdb_bonaca)), keys = 'name')
+tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a, tdb23b, tdb24a, tdb_bonaca)), keys = 'name')
 
 for key in list(tdb.columns):
     if key == 'name':
@@ -132,6 +149,7 @@ isnan = spall_tdb['tdb_ra'].mask
 print('there are %i rows after matching to targetDB...' % len(spall_tdb))
 print('there are %i NaN coordinates, removing from spall:' % np.sum(isnan))
 print(list(spall_tdb[isnan]['name']))
+
 spall_tdb= spall_tdb[~isnan]
 print('there are %i rows after removing nans...' % len(spall_tdb))
 
