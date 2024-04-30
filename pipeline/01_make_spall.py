@@ -18,10 +18,11 @@ args = parser.parse_args()
 dotransfer = args.transfer
 print(dotransfer)
 
+datadir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/'
 
-outdir = '/n/holyscratch01/conroy_lab/vchandra/mage/data/reduced/%s/' % ver
-plotdir1 = '/n/holyscratch01/conroy_lab/vchandra/mage/plots/%s/'% ver
-plotdir2 = '/n/holyscratch01/conroy_lab/vchandra/mage/plots/%s/reduction/' % ver
+outdir = datadir + 'data/reduced/%s/' % ver
+plotdir1 = datadir + 'plots/%s/'% ver
+plotdir2 = datadir + 'plots/%s/reduction/' % ver
 
 ################################
 # COLLATE SPECTRA
@@ -43,7 +44,7 @@ if dotransfer:
     except:
         print('dir exists')
 
-    specfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/*202*/reduced_%s/magellan_mage_A/Science/coadd/*.fits' % ver)
+    specfiles = glob.glob(datadir + 'data/*202*/reduced_%s/magellan_mage_A/Science/coadd/*.fits' % ver)
 
     print('there are %i co-added spectra' % len(specfiles))
 
@@ -69,7 +70,7 @@ else:
 # COLLATE PLOTS
 ################################
 
-plotfiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/data/*202*/reduced_%s/magellan_mage_A/plots/*.png' % ver)
+plotfiles = glob.glob(datadir + 'data/*202*/reduced_%s/magellan_mage_A/plots/*.png' % ver)
 if dotransfer:
     for file in (plotfiles):
         name = file.split('/')[-1].replace('.png', '')
@@ -128,11 +129,11 @@ print('there are %i observations in spall, for %i unique targets...' % (len(spal
 # MATCH TO TARGETDB
 ################################
 
-tdb = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2022b.fits')
-tdb23a = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2023a.fits')
-tdb23b = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2023b.fits')
-tdb24a = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_2024a.fits')
-tdb_bonaca = Table.read('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/tdb/targetdb_bonaca.fits')
+tdb = Table.read(datadir + 'catalogs/tdb/targetdb_2022b.fits')
+tdb23a = Table.read(datadir + 'catalogs/tdb/targetdb_2023a.fits')
+tdb23b = Table.read(datadir + 'catalogs/tdb/targetdb_2023b.fits')
+tdb24a = Table.read(datadir + 'catalogs/tdb/targetdb_2024a.fits')
+tdb_bonaca = Table.read(datadir + 'catalogs/tdb/targetdb_bonaca.fits')
 
 
 tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a, tdb23b, tdb24a, tdb_bonaca)), keys = 'name')
@@ -153,4 +154,4 @@ print(list(spall_tdb[isnan]['name']))
 spall_tdb= spall_tdb[~isnan]
 print('there are %i rows after removing nans...' % len(spall_tdb))
 
-spall_tdb.write('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/spall.fits', overwrite = True)
+spall_tdb.write(datadir + 'catalogs/spall.fits', overwrite = True)

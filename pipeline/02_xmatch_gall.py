@@ -14,8 +14,10 @@ print('starting script')
 
 #infile = '/n/holyscratch01/conroy_lab/vchandra/mage/MS/ms_input/source_ids.txt'
 
-infile = '/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/spall.fits'
-outfolder = '/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/xgall/'
+datadir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/'
+
+infile = datadir + 'catalogs/spall.fits'
+outfolder = datadir + 'catalogs/xgall/'
 
 try:
 	os.mkdir(outfolder)

@@ -6,7 +6,10 @@ from tqdm import tqdm
 import numpy as np
 import glob
 
-infiles = glob.glob('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/xgall/*.fits')
+datadir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/'
+
+
+infiles = glob.glob(datadir + 'catalogs/xgall/*.fits')
 
 # with open('/n/home03/vchandra/outerhalo/08_mage/pipeline/control/redux.txt', 'r') as file:
 # 	redux = file.read().replace('\n','')
@@ -40,4 +43,4 @@ acat['ACAT_ID'] = np.arange(len(acat))
 
 print('there are %i stars in the ACAT' % len(acat))
 
-acat.write('/n/holyscratch01/conroy_lab/vchandra/mage/catalogs/mage_acat.fits', overwrite = True)
+acat.write(datadir + 'catalogs/mage_acat.fits', overwrite = True)
