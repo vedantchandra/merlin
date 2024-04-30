@@ -19,4 +19,4 @@ echo $SLURM_JOB_PARTITION
 echo 'NODE NAME:' 
 echo $SLURMD_NODENAME 
 
-python -u radagast.py --dir=/n/holyscratch01/conroy_lab/vchandra/mage/data/2024_04_22/ --version=0  --skipred=False
+python -u radagast.py --dir=/n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/data/2024_04_22/ --version=0  --skipred=False
