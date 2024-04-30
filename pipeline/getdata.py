@@ -12,7 +12,7 @@ speedoflight = constants.c / 1000.0
 
 res_fac = 0.5 # increase theoretical resolution to avoid prior edge
 
-datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+datadir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/'
 
 with open('/n/home03/vchandra/outerhalo/08_mage/pipeline/control/redux.txt', 'r') as file:
     redux = file.read().replace('\n','')

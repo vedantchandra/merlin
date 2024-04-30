@@ -4,7 +4,7 @@ import os
 import glob
 import numpy as np
 
-datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+datadir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/'
 pipedir = '/n/home03/vchandra/outerhalo/08_mage/pipeline/'
 
 

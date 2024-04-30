@@ -12,8 +12,8 @@ specNN = '/n/home03/vchandra/software/MS_files/NN/R12K/modV0_spec_LinNet_R12K_WL
 contNN = '/n/home03/vchandra/software/MS_files/NN/R12K/modV0_cont_LinNet_R12K_WL445_565.h5' #'msdata/lowres/YSTANN_4000_7000_cont.h5' # FIT CONTINUUM_NORMALIZED
 photNN = '/n/home03/vchandra/software/MS_files/VARRV/'
 MISTgrid = '/n/home03/vchandra/software/MS_files/MIST_2.0_spot_EEPtrk_small.h5'
-datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
-outdir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+datadir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/'
+outdir = datadir
 NNtype = 'LinNet'
 
 photbands = ({
@@ -207,7 +207,7 @@ def run(GaiaID=None,version='VX', npoints = 250,catalog = None,
     inputdict['sampler']['npoints'] = npoints
     # inputdict['sampler']['npoints'] = 150
     inputdict['sampler']['samplerbounds'] = 'multi'
-    inputdict['sampler']['flushnum'] = 250
+    inputdict['sampler']['flushnum'] = 1000
     inputdict['sampler']['delta_logz_final'] = 0.01
     inputdict['sampler']['bootstrap'] = 0
     inputdict['sampler']['walks'] = 25

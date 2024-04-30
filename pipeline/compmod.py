@@ -68,8 +68,8 @@ specNN = '/n/home03/vchandra/software/MS_files/NN/R12K/modV0_spec_LinNet_R12K_WL
 contNN = '/n/home03/vchandra/software/MS_files/NN/R12K/modV0_cont_LinNet_R12K_WL445_565.h5' #'msdata/lowres/YSTANN_4000_7000_cont.h5' # FIT CONTINUUM_NORMALIZED
 photNN = '/n/home03/vchandra/software/MS_files/VARRV/'
 MISTgrid = '/n/home03/vchandra/software/MS_files/MIST_2.0_spot_EEPtrk_small.h5'
-datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
-outdir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+datadir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/'
+outdir = datadir
 NNtype = 'LinNet'
 SBlib = '/n/home03/vchandra/software/MS_files/CKC/ckc_R500.h5'
 

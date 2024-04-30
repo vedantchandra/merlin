@@ -4,7 +4,7 @@ import os
 
 
 
-datadir = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+datadir = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/'
 outdir = datadir
 
 def run(catalog=None,ind=None,version='V0.0', npoints = 250, skipfit = 0):
