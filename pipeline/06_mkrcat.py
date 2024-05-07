@@ -12,7 +12,7 @@ from astropy.table import Table
 
 import argparse
 
-outdir  = '/n/holyscratch01/conroy_lab/vchandra/mage/'
+outdir  = '/n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/'
 
 class mkrcat(object):
     """docstring for mkrcat"""
