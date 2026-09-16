@@ -10,7 +10,8 @@
 
 #module load python
 #source ~/.bashrc
-source activate outerhalo
+source /n/home03/vchandra/miniforge3/etc/profile.d/conda.sh
+conda activate outerhalo
 
 cd /n/home03/vchandra/outerhalo/08_mage/pipeline/
 python -u 02_xmatch_gall.py "${SLURM_ARRAY_TASK_ID}"
