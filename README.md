@@ -133,6 +133,34 @@ renaming a mis-labelled frame in the special-case block, or the
 `nb/99_fix_files.ipynb` notebook. `nb/99_check_reductions.ipynb` summarises
 which nights/targets have coadds.
 
+### 01 — Build a target database for new nights (`01_make_tdb_2026.py`)
+
+Before `01_make_spall.py` can keep a coadd, its target name must exist in one
+of the `catalogs/tdb/targetdb_*.fits` files (columns `source_id, ra, dec,
+name, selection`). `01_make_tdb_2026.py` builds `targetdb_2026a.fits` for the
+two 2026 Bonaca nights and is the template for future nights:
+
+1. Takes the `name` of every science/standard frame from the FITS `OBJECT`
+   header (lower-cased), so the join in make_spall is guaranteed to hit.
+2. Looks each name up in the night's observing plan for an approximate
+   position, G magnitude, and selection tag. Plan coordinates are **not**
+   written to the tdb: the February plan lists RA to 1 s (~11"), far coarser
+   than the 3" photometry match.
+3. Runs batched Gaia DR3 cone searches (25" around the plan position,
+   constant centres so the archive's index is used) and adopts the source
+   whose G matches the plan within 0.4 mag (1.5 mag for HIP standards),
+   nearest first. This gives the precise `ra, dec` and `source_id`.
+4. Cross-checks against the FITS header pointing (catches mislabeled frames)
+   and against any existing tdb rows (catches method errors), and prints every
+   anomaly to `targetdb_2026a_issues.txt` with a full per-target table in
+   `targetdb_2026a_diagnostics.csv`.
+
+Run it in the `outerhalo` env; it needs network access to the Gaia archive.
+Known 2026 quirks it handles: the frame labelled `hip21020` on 2026-02-07 was
+actually pointed at hip21024 (kept under the header name with hip21024's
+coordinates), and the plan's `j1200m2755`/`j1200m2755b` pair 11" apart
+resolves to the unsuffixed star.
+
 ### 01 — Collate coadds (`01_make_spall.py`)
 
 Copies every `*_coadd.fits` and preview PNG into `data/reduced/v0/` and
@@ -143,6 +171,7 @@ target-DB match are dropped and printed. Use `--no-transfer` to skip the rsync
 step and only rebuild the table.
 
 Note the special case `j2035m2245 → j2035m2445` for a mis-named header.
+The list of target DBs is hard-coded in this script; add new ones there.
 
 ### 02 — Photometry crossmatch (`02_xmatch_gall.sh`)
 
@@ -263,11 +292,10 @@ is commented out.
   Observing logs and target lists from the archives sit at the night level
   next to `raw/`. Three unnamed startup ThAr frames from the February night
   were moved to `b2026_02_07/raw_unused/`.
-- The 2026 science targets (44 of 53) are not in any `catalogs/tdb/` target DB
-  yet, so `01_make_spall.py` will drop them until a `targetdb_2026*.fits`
-  (columns `source_id, ra, dec, name, selection`) is added and loaded there.
-  The April night's `OC_MagE_*_cat_*.txt` has coordinates and selection tags
-  (`hvs`, `jet`, `ngc5904`, `rvs`, `tell`) for its targets.
+- `catalogs/tdb/targetdb_2026a.fits` (68 targets, built by
+  `01_make_tdb_2026.py` from the observing plans + Gaia DR3) covers both 2026
+  nights and is loaded by `01_make_spall.py`. Selections: hvs, jet, ngc1851,
+  ngc5904, rvs, tell.
 - A separate `rvs` catalog (RV standards) and `h3cal` catalog (H3 overlap
   stars) have been fit for calibration.
 

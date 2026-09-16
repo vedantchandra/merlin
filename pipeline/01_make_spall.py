@@ -135,10 +135,11 @@ tdb23a = Table.read(datadir + 'catalogs/tdb/targetdb_2023a.fits')
 tdb23b = Table.read(datadir + 'catalogs/tdb/targetdb_2023b.fits')
 tdb24a = Table.read(datadir + 'catalogs/tdb/targetdb_2024a.fits')
 tdb_bonaca = Table.read(datadir + 'catalogs/tdb/targetdb_bonaca.fits')
+tdb26a = Table.read(datadir + 'catalogs/tdb/targetdb_2026a.fits') # b2026_02_07 + b2026_04_06, built by 01_make_tdb_2026.py
 
 print(len(tdb_bonaca))
 
-tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a, tdb23b, tdb24a, tdb_bonaca)), keys = 'name')
+tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a, tdb23b, tdb24a, tdb_bonaca, tdb26a)), keys = 'name')
 
 print(np.unique(tdb['selection']))
 
