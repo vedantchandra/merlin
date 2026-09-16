@@ -256,10 +256,18 @@ is commented out.
   the latest.
 - The `ut2403*`/`ut2404*`/`ut2405*` zips in `data/` are the source archives
   for the four reduced `b2024_*` nights and can be ignored.
-- Two new nights, **2026-02-07/08** (`ut260207_08-*.zip`) and **2026-04-06**
-  (`20260406-*.zip`), were uploaded to `data/` on 2026-09-16. They have not
-  been unpacked into `<night>/raw/` or reduced. The April archive also holds
-  the observing plan spreadsheet and target logs.
+- Two new Bonaca-program nights were unpacked on 2026-09-16 and pass a
+  radagast dry run but are **not yet reduced**: `b2026_02_07` (128 frames,
+  standard hip70050) and `b2026_04_06` (137 frames, standard hip44395). The
+  source zips (`ut260207_08-*.zip`, `20260406-*.zip`) remain in `data/`.
+  Observing logs and target lists from the archives sit at the night level
+  next to `raw/`. Three unnamed startup ThAr frames from the February night
+  were moved to `b2026_02_07/raw_unused/`.
+- The 2026 science targets (44 of 53) are not in any `catalogs/tdb/` target DB
+  yet, so `01_make_spall.py` will drop them until a `targetdb_2026*.fits`
+  (columns `source_id, ra, dec, name, selection`) is added and loaded there.
+  The April night's `OC_MagE_*_cat_*.txt` has coordinates and selection tags
+  (`hvs`, `jet`, `ngc5904`, `rvs`, `tell`) for its targets.
 - A separate `rvs` catalog (RV standards) and `h3cal` catalog (H3 overlap
   stars) have been fit for calibration.
 

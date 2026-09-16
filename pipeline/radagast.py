@@ -28,7 +28,8 @@ flux_standards = ['hip77', 'hip67523', 'hip104326', 'hip108327', 'hip17946', 'hi
 				  'hip41926', # NOT AN A STAR, this is for Dec 3 2023 when no A star was observed
 		  		 'hip18271', # NOT AN A STAR
 				 'hip100773', 'hip5675', 'hip6257',
-				 'hip51633', 'hip70050'] # these are for Ana's program, A stars
+				 'hip51633', 'hip70050', # these are for Ana's program, A stars
+				 'hip44395', 'hip43656', 'hip84267', 'hip84881'] # A-star tellurics from Ana's Apr 2026 night (b2026_04_06)
 
 ###############################################################################################
 # IMPORTS
