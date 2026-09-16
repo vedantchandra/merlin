@@ -21,6 +21,7 @@ if __name__ == '__main__':
     parser.add_argument('--no-submit', dest='submit', action='store_false')
     parser.add_argument('--arr1', help='start array idx',type=int,default=0)
     parser.add_argument('--arr2', help='end array idx',type=int,default=None)
+    parser.add_argument('--sel', help = 'fit single selection', type = str, default = None)
     parser.set_defaults(submit=True)
     args = parser.parse_args()
 
@@ -31,6 +32,7 @@ if __name__ == '__main__':
     submit = args.submit
     arr1 = args.arr1 
     arr2 = args.arr2
+    selection = args.sel
     overwrite = bool(int(args.overwrite))
 
     if overwrite:
@@ -58,12 +60,12 @@ if __name__ == '__main__':
         print('submitting %i stars to MINESWEEPER...' % (arr2 - arr1 + 1))
     else:
         print('skipping stars from version %s that have already been fitted...' % version)
-        sampledir = datadir + 'samples/%s/%s/' % (catalog, version)
-        samplefiles = glob.glob(sampledir + '*.dat')
+        sampledir = datadir + 'pars/%s/%s/' % (catalog, version)
+        samplefiles = glob.glob(sampledir + '*.pars')
         print('there are %i sample files' % len(samplefiles))
         done_sources = [];
         for file in samplefiles:
-            source = file.split('_')[-6]
+            source = file.split('_')[-5]
             done_sources.append(source)
 
         print(done_sources)

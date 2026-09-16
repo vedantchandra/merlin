@@ -125,6 +125,7 @@ for ii,file in enumerate(specfiles):
 spall = Table(spall_dict)
 print('there are %i observations in spall, for %i unique targets...' % (len(spall), len(np.unique(spall['name']))))
 
+
 ################################
 # MATCH TO TARGETDB
 ################################
@@ -135,8 +136,11 @@ tdb23b = Table.read(datadir + 'catalogs/tdb/targetdb_2023b.fits')
 tdb24a = Table.read(datadir + 'catalogs/tdb/targetdb_2024a.fits')
 tdb_bonaca = Table.read(datadir + 'catalogs/tdb/targetdb_bonaca.fits')
 
+print(len(tdb_bonaca))
 
 tdb = astropy.table.unique(astropy.table.vstack((tdb, tdb23a, tdb23b, tdb24a, tdb_bonaca)), keys = 'name')
+
+print(np.unique(tdb['selection']))
 
 for key in list(tdb.columns):
     if key == 'name':
@@ -149,7 +153,11 @@ isnan = spall_tdb['tdb_ra'].mask
 
 print('there are %i rows after matching to targetDB...' % len(spall_tdb))
 print('there are %i NaN coordinates, removing from spall:' % np.sum(isnan))
+print('NaN selections:')
+print(spall_tdb['tdb_selection'][isnan])
 print(list(spall_tdb[isnan]['name']))
+print(np.unique(spall_tdb['tdb_selection']))
+print('%i in ylgr' % (np.sum(spall_tdb['tdb_selection'] == 'ylgr')))
 
 spall_tdb= spall_tdb[~isnan]
 print('there are %i rows after removing nans...' % len(spall_tdb))
