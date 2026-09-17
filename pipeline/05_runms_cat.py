@@ -63,17 +63,21 @@ if __name__ == '__main__':
         sampledir = datadir + 'pars/%s/%s/' % (catalog, version)
         samplefiles = glob.glob(sampledir + '*.pars')
         print('there are %i sample files' % len(samplefiles))
-        done_sources = [];
+        # a fit is identified by (Gaia ID, observation date): the same star observed on
+        # two nights needs two fits. Filenames are mage_<GaiaID>_<date>_<VER>.pars, where
+        # <date> itself contains underscores (e.g. b2026_02_07).
+        done = set()
         for file in samplefiles:
-            source = file.split('_')[-5]
-            done_sources.append(source)
+            stem = os.path.basename(file)[len('mage_'):-len('_%s.pars' % version)]
+            gid, date = stem.split('_', 1)
+            done.add((gid, date))
 
-        print(done_sources)
+        print('%i (GaiaID, date) pairs already fitted' % len(done))
 
-        isdone = np.isin(tab['GAIAEDR3_ID'], done_sources)
+        isdone = np.array([(str(g), str(d)) in done for g, d in zip(tab['GAIAEDR3_ID'], tab['date'])])
         tofit_idx = tab['ACAT_ID'][~isdone]
         tofit_idx = [str(x) for x in tofit_idx]
-        print(tofit_idx)
+        print('ACAT_IDs to fit:', tofit_idx)
 
         print('there are %i stars that need to be fit' % len(tofit_idx))
 
