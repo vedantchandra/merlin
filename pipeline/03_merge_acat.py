@@ -37,7 +37,9 @@ for file in infiles:
 
 acat.remove_columns(['UNWISE_FRACFLUX', 'UNWISE_FLAGS', 'UNWISE_INFO_FLAGS'])
 
-acat = acat[np.argsort(acat['mage_mjd'])]
+# deterministic ordering: MJD, then date and name as tiebreakers (same star ingested under
+# two night names with identical MJD would otherwise swap ACAT_IDs between runs)
+acat = acat[np.lexsort((acat['name'], acat['date'], acat['mage_mjd']))]
 
 acat['ACAT_ID'] = np.arange(len(acat))
 
