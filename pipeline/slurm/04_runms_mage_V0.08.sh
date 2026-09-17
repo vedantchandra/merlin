@@ -8,9 +8,10 @@
 #SBATCH --constraint='intel'
 #SBATCH -o /n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/logs/mage/V0.08/%a.out
 #SBATCH -e /n/holystore01/LABS/conroy_lab/Lab/vchandra/mage/logs/mage/V0.08/%a.err
-#SBATCH --array=573
+#SBATCH --array=757-818
 
-source activate outerhalo
+source /n/home03/vchandra/miniforge3/etc/profile.d/conda.sh
+conda activate outerhalo
 
 cd /n/home03/vchandra/outerhalo/08_mage/pipeline/
 echo 'CPU USED: ' 

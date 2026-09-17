@@ -299,6 +299,23 @@ is commented out.
 - A separate `rvs` catalog (RV standards) and `h3cal` catalog (H3 overlap
   stars) have been fit for calibration.
 
+## Known issues / to do
+
+- **Duplicate night `b2024_03_31`.** The 2024-03-31 data were ingested twice:
+  once as survey night `2024_03_31` (reduced April 2024) and again as Bonaca
+  night `b2024_03_31` (reduced August 2025, from `ut240330_31.zip`, with two
+  extra ThAr frames). The raw frames are byte-identical and all 19 targets
+  appear twice in spall/acat/rcat. Only the `2024_03_31` copies have been
+  fitted. Fix: exclude `b2024_03_31` in `01_make_spall.py`, then rerun steps
+  01 → 03 and rebuild the rcat.
+- HIP standards within ~5° of the Galactic plane never get photometry
+  because gall2 has no coverage there (hip38789, hip41926, hip42922,
+  hip43656, hip44395, hip84267, hip84881). They are dropped at the acat
+  stage. Harmless for science targets.
+- `radagast.py` only fudge-fixes missing orders on the flux standard, so other
+  standards with a missing order fail the 1D coadd (e.g. hip17819 and
+  hip22865 on b2026_02_07).
+
 ## Adding a new night
 
 1. Unpack raw frames to `<datadir>/data/<YYYY_MM_DD>/raw/`.
