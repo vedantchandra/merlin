@@ -277,21 +277,26 @@ is commented out.
 
 ## Current state (September 2026)
 
-- All 30 survey nights (2022_08_03 → 2024_04_23) and the four 2024 Bonaca
-  nights are reduced at `v0`; there are 782 coadd files in `data/reduced/v0/`.
+- All 30 survey nights (2022_08_03 → 2024_04_23), the four 2024 Bonaca
+  nights, and the two 2026 Bonaca nights are reduced at `v0`; there are 849
+  coadd files in `data/reduced/v0/` and 819 rows in the acat.
   Five older `b2022_*` Bonaca nights have raw data but no reduction.
 - MINESweeper versions `V0.07` and `V0.08` have `.pars` outputs on disk;
   rcats exist for `V0.0`, `V0.01`, `V0.03`, `V0.07`, and `V0.08`. `V0.08` is
-  the latest.
+  the latest: `mage_rcat_V0.08_MSG.fits` rebuilt 2026-09-17 with 819 rows,
+  793 fitted (733 earlier + 60 from the b2026 nights). Two b2026 standards
+  (hip21020, hip73820) were still fitting when it was built; rerun
+  `06_mkrcat.py` to pick them up.
 - The `ut2403*`/`ut2404*`/`ut2405*` zips in `data/` are the source archives
   for the four reduced `b2024_*` nights and can be ignored.
-- Two new Bonaca-program nights were unpacked on 2026-09-16 and pass a
-  radagast dry run but are **not yet reduced**: `b2026_02_07` (128 frames,
-  standard hip70050) and `b2026_04_06` (137 frames, standard hip44395). The
-  source zips (`ut260207_08-*.zip`, `20260406-*.zip`) remain in `data/`.
-  Observing logs and target lists from the archives sit at the night level
-  next to `raw/`. Three unnamed startup ThAr frames from the February night
-  were moved to `b2026_02_07/raw_unused/`.
+- Two Bonaca-program nights were added 2026-09-16/17 and taken all the way
+  through the pipeline: `b2026_02_07` (128 frames, flux standard hip70050,
+  30 coadds; hip17819 and hip22865 failed the 1D coadd) and `b2026_04_06`
+  (137 frames, flux standard hip44395, 37 coadds). The source zips
+  (`ut260207_08-*.zip`, `20260406-*.zip`) remain in `data/`. Observing logs
+  and target lists from the archives sit at the night level next to `raw/`.
+  Three unnamed startup ThAr frames from the February night were moved to
+  `b2026_02_07/raw_unused/`.
 - `catalogs/tdb/targetdb_2026a.fits` (68 targets, built by
   `01_make_tdb_2026.py` from the observing plans + Gaia DR3) covers both 2026
   nights and is loaded by `01_make_spall.py`. Selections: hvs, jet, ngc1851,
